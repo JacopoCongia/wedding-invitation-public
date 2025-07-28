@@ -1,0 +1,51 @@
+{
+  "login": {
+    "welcome_title": "Benvenuti al Nostro Matrimonio!",
+    "password_prompt": "Inserisci la password che ti abbiamo fornito per procedere.",
+    "password_placeholder": "Inserisci password",
+    "enter_button": "Entra",
+    "incorrect_password": "Password errata. Riprova."
+  },
+  "header": {
+    "about_us": "Chi Siamo",
+    "location": "Dove Siamo",
+    "accomodation": "Alloggio",
+    "food": "Menù",
+    "dress_code": "Dress Code",
+    "gifts": "Regali",
+    "rsvp": "Conferma Presenza"
+  },
+  "guest_view": {
+    "about_us_title": "Chi Siamo",
+    "location_title": "Dove Siamo",
+    "accomodation_title": "Alloggio",
+    "food_title": "Cibo e Bevande",
+    "dress_code_title": "Dress Code",
+    "gifts_title": "Lista Regali",
+    "rsvp_title": "Conferma Presenza",
+    "rsvp_name_label": "Nome",
+    "rsvp_lastname_label": "Cognome",
+    "rsvp_email_label": "Email",
+    "rsvp_plus_one_label": "Numero di Accompagnatori",
+    "rsvp_menu_label": "Preferenza Menù",
+    "rsvp_regular_label": "Normale",
+    "rsvp_vegetarian_label": "Vegetariano",
+    "rsvp_attending_label": "Parteciperai?",
+    "rsvp_selection": "Seleziona...",
+    "rsvp_selection_none": "Nessuno",
+    "rsvp_plus_ones": "Numero di Accompagnatori",
+    "yes": "Si",
+    "no": "No",
+    "submit_rsvp": "Invia Conferma",
+    "rsvp_success": "Grazie per la tua conferma!",
+    "rsvp_error": "Si è verificato un errore nell'invio della conferma. Riprova."
+  },
+  "couple_view": {
+    "dashboard_title": "Pannello degli Sposi",
+    "guest_list": "Lista Ospiti",
+    "name_column": "Nome",
+    "plus_one_column": "Accompagnatori",
+    "menu_column": "Menù",
+    "attending_column": "Partecipa"
+  }
+}

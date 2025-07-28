@@ -1,0 +1,50 @@
+{
+  "login": {
+    "welcome_title": "Welcome to Our Wedding!",
+    "password_prompt": "Please enter the password we provided to proceed.",
+    "password_placeholder": "Enter password",
+    "enter_button": "Enter",
+    "incorrect_password": "Incorrect password. Please try again."
+  },
+  "header": {
+    "about_us": "About Us",
+    "location": "Venue",
+    "accomodation": "Accommodation",
+    "food": "Menu",
+    "dress_code": "Dress Code",
+    "gifts": "Gifts",
+    "rsvp": "RSVP"
+  },
+  "guest_view": {
+    "about_us_title": "About Us",
+    "location_title": "Venue",
+    "accomodation_title": "Accommodation",
+    "food_title": "Food & Drinks",
+    "dress_code_title": "Dress Code",
+    "gifts_title": "Gift Registry",
+    "rsvp_title": "RSVP",
+    "rsvp_name_label": "Name",
+    "rsvp_lastname_label": "Last Name",
+    "rsvp_email_label": "Email",
+    "rsvp_plus_one_label": "Number of +1s",
+    "rsvp_menu_label": "Menu Preference:",
+    "rsvp_regular_label": "Regular",
+    "rsvp_vegetarian_label": "Vegetarian",
+    "rsvp_attending_label": "Attending?",
+    "rsvp_selection": "Select...",
+    "rsvp_selection_none": "None",
+    "yes": "Yes",
+    "no": "No",
+    "submit_rsvp": "Submit RSVP",
+    "rsvp_success": "Thank you for your RSVP!",
+    "rsvp_error": "There was an error submitting your RSVP. Please try again."
+  },
+  "couple_view": {
+    "dashboard_title": "Couple's Dashboard",
+    "guest_list": "Guest List",
+    "name_column": "Name",
+    "plus_one_column": "+1s",
+    "menu_column": "Menu",
+    "attending_column": "Attending"
+  }
+}
