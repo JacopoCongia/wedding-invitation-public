@@ -4,12 +4,12 @@ import Header from "./Header";
 import Section from "./Section";
 import RSVP from "./RSVP";
 
-function GuestPage({ setLoggedInView }) {
+function GuestPage({ setLoggedInView, setIsFading }) {
   const { t } = useLanguage();
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setFadeIn(true), 10);
+    setTimeout(() => setFadeIn(true), 10); // Delay to allow fade-in effect
   }, []);
 
   return (
@@ -19,7 +19,11 @@ function GuestPage({ setLoggedInView }) {
           fadeIn ? "opacity-100" : "opacity-0"
         } transition-opacity duration-400`}
       >
-        <Header setLoggedInView={setLoggedInView} />
+        <Header
+          setLoggedInView={setLoggedInView}
+          setFadeIn={setFadeIn}
+          setIsFading={setIsFading}
+        />
         <Section
           title={t("guest_view.about_us_title")}
           content="content"

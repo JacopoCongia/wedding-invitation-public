@@ -23,7 +23,7 @@ function App() {
       setIsFading(true);
       setTimeout(() => {
         setLoggedInView("guest");
-        setIsFading(false); // Reset fading state
+        // setIsFading(false); // Reset fading state
         setPasswordInput(""); // Clear input on error
         setErrorMessage(""); // Clear error message
       }, 400);
@@ -31,7 +31,7 @@ function App() {
       setIsFading(true);
       setTimeout(() => {
         setLoggedInView("couple");
-        setIsFading(false); // Reset fading state
+        // setIsFading(false); // Reset fading state
         setPasswordInput(""); // Clear input on error
         setErrorMessage(""); // Clear error message
       }, 400);
@@ -54,7 +54,10 @@ function App() {
       )}
 
       {loggedInView === "guest" && (
-        <GuestPage setLoggedInView={setLoggedInView} />
+        <GuestPage
+          setLoggedInView={setLoggedInView}
+          setIsFading={setIsFading}
+        />
       )}
     </>
   );

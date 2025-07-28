@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
 
-function Header({ setLoggedInView }) {
+function Header({ setLoggedInView, setFadeIn, setIsFading }) {
   const { t, setLanguage } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,6 +18,17 @@ function Header({ setLoggedInView }) {
   // Function to handle language change
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
+  };
+
+  const handleGoBackClick = (e) => {
+    e.preventDefault();
+    setFadeIn(false); // Reset fade-in state
+    setTimeout(() => {
+      setLoggedInView("login");
+      setTimeout(() => {
+        setIsFading(false);
+      }, 10);
+    }, 400);
   };
 
   // Function to handle the click event and scroll to the section with the corresponding ID
@@ -47,8 +58,8 @@ function Header({ setLoggedInView }) {
 
       <header className="flex text-[0.8rem] justify-center items-center sticky top-0 z-50 p-4 bg-neutral-50 lg:text-[1rem]">
         <button
-          onClick={() => {
-            setLoggedInView("login");
+          onClick={(e) => {
+            handleGoBackClick(e);
           }}
           aria-label="Back to login"
           className="cursor-pointer hidden min-[850px]:flex"
