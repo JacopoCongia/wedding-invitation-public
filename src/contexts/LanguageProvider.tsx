@@ -1,29 +1,12 @@
 import { useState, useEffect } from "react";
 import { LanguageContext } from "./language-context";
+import {
+  type LanguageContextType,
+  type NestedKeyOf,
+  type TranslationStructure,
+} from "../types/language";
 import en from "../translations/en.json";
 import it from "../translations/it.json";
-
-// Define the structure of the translation object for typescript
-interface TranslationStructure {
-  login: {
-    welcome_title: string;
-    password_prompt: string;
-    password_placeholder: string;
-    enter_button: string;
-    incorrect_password: string;
-  };
-  header: {
-    about_us: string;
-    location: string;
-    accomodation: string;
-    food: string;
-    dress_code: string;
-    gifts: string;
-    rsvp: string;
-  };
-  guest_view: Record<string, unknown>;
-  couple_view: Record<string, unknown>;
-}
 
 type Translations = {
   en: TranslationStructure;
@@ -31,11 +14,6 @@ type Translations = {
 };
 
 type LanguageKey = keyof Translations;
-type NestedKeyOf<T> = {
-  [K in keyof T & string]: T[K] extends object
-    ? `${K}.${NestedKeyOf<T[K]>}`
-    : K;
-}[keyof T & string];
 type NestedValue = string | Record<string, unknown>;
 
 // Available languages and their translation files
@@ -82,7 +60,11 @@ export const LanguageProvider = ({
     return String(current);
   };
 
-  const value = { language, setLanguage, getTranslation };
+  const value: LanguageContextType = {
+    language,
+    setLanguage: (lang: string) => setLanguage(lang as LanguageKey),
+    getTranslation,
+  };
 
   return (
     <LanguageContext.Provider value={value}>
