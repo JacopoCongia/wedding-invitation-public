@@ -1,26 +1,32 @@
 import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
 
-function Header({ setLoggedInView, setFadeIn, setIsFading }) {
-  const { t, setLanguage } = useLanguage();
+interface HeaderProps {
+  setLoggedInView: (view: "login" | "guest" | "couple") => void;
+  setFadeIn: (fadeIn: boolean) => void;
+  setIsFading: (isFading: boolean) => void;
+}
+
+function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
+  const { getTranslation, setLanguage } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const links = [
-    { label: t("header.about_us"), id: "about-us" },
-    { label: t("header.location"), id: "venue" },
-    { label: t("header.accomodation"), id: "accomodation" },
-    { label: t("header.food"), id: "menu" },
-    { label: t("header.dress_code"), id: "dress-code" },
-    { label: t("header.gifts"), id: "gifts" },
-    { label: t("header.rsvp"), id: "rsvp" },
+    { label: getTranslation("header.about_us"), id: "about-us" },
+    { label: getTranslation("header.location"), id: "venue" },
+    { label: getTranslation("header.accomodation"), id: "accomodation" },
+    { label: getTranslation("header.food"), id: "menu" },
+    { label: getTranslation("header.dress_code"), id: "dress-code" },
+    { label: getTranslation("header.gifts"), id: "gifts" },
+    { label: getTranslation("header.rsvp"), id: "rsvp" },
   ];
 
   // Function to handle language change
-  const handleLanguageChange = (lang) => {
+  const handleLanguageChange = (lang: "en" | "it") => {
     setLanguage(lang);
   };
 
-  const handleGoBackClick = (e) => {
+  const handleGoBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setFadeIn(false); // Reset fade-in state
     setTimeout(() => {
@@ -32,7 +38,7 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }) {
   };
 
   // Function to handle the click event and scroll to the section with the corresponding ID
-  const handleClick = (id) => {
+  const handleClick = (id: string) => {
     const element = document.getElementById(id);
 
     if (element) {

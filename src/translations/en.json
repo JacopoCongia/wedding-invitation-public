@@ -24,9 +24,13 @@
     "gifts_title": "Gift Registry",
     "rsvp_title": "RSVP",
     "rsvp_name_label": "Name",
+    "rsvp_name_placeholder": "Enter your name",
     "rsvp_lastname_label": "Last Name",
+    "rsvp_lastname_placeholder": "Enter your last name",
     "rsvp_email_label": "Email",
-    "rsvp_plus_one_label": "Number of +1s",
+    "rsvp_email_placeholder": "Enter your email",
+    "rsvp_plus_one_label": "Number of Plus Ones",
+    "rsvp_plus_one": "Plus One",
     "rsvp_menu_label": "Menu Preference:",
     "rsvp_regular_label": "Regular",
     "rsvp_vegetarian_label": "Vegetarian",
@@ -43,7 +47,7 @@
     "dashboard_title": "Couple's Dashboard",
     "guest_list": "Guest List",
     "name_column": "Name",
-    "plus_one_column": "+1s",
+    "plus_one_column": "Plus Ones",
     "menu_column": "Menu",
     "attending_column": "Attending"
   }

@@ -1,4 +1,12 @@
-function Section({ title, content, id, children, dark }) {
+interface SectionProps {
+  title: string;
+  content: string;
+  id: string;
+  children?: React.ReactNode;
+  dark?: boolean; // Optional prop to determine if the section should have a dark background
+}
+
+function Section({ title, content, id, children, dark }: SectionProps) {
   return (
     <section
       className={`w-full min-h-screen flex flex-col items-center justify-center py-15 scroll-mt-14 ${
@@ -8,7 +16,7 @@ function Section({ title, content, id, children, dark }) {
       }`}
       id={id}
     >
-      <h2 className="text-4xl font-bold mb-4 text-center">{title}</h2>
+      <h2 className="text-4xl px-5 font-bold mb-4 text-center">{title}</h2>
       <p className="text-lg text-center">{content}</p>
       {children}
     </section>

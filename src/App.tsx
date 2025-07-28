@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLanguage } from "./hooks/useLanguage";
 import LoginPage from "./components/LoginPage";
 import GuestPage from "./components/GuestPage";
 
 function App() {
-  const { t } = useLanguage();
+  const { getTranslation } = useLanguage();
 
   const [passwordInput, setPasswordInput] = useState("");
   const [loggedInView, setLoggedInView] = useState("login");
@@ -17,7 +17,7 @@ function App() {
   const COUPLE_PASSWORD = "couplesecret";
 
   // Handle the login logic, depending on the password input
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (passwordInput === GUEST_PASSWORD) {
       setIsFading(true);
@@ -36,7 +36,7 @@ function App() {
         setErrorMessage(""); // Clear error message
       }, 400);
     } else {
-      setErrorMessage(t("login.incorrect_password"));
+      setErrorMessage(getTranslation("login.incorrect_password"));
       setPasswordInput(""); // Clear input on error
     }
   };

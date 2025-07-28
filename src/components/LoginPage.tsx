@@ -1,14 +1,22 @@
 import { useLanguage } from "../hooks/useLanguage";
 
+interface LoginPageProps {
+  onLogin: (e: React.FormEvent<HTMLFormElement>) => void;
+  passwordInput: string;
+  setPasswordInput: (value: string) => void;
+  errorMessage: string;
+  isFading: boolean;
+}
+
 function LoginPage({
   onLogin,
   passwordInput,
   setPasswordInput,
   errorMessage,
   isFading,
-}) {
+}: LoginPageProps) {
   // Use the custom hook to get translation function and language state from context
-  const { t, setLanguage } = useLanguage();
+  const { getTranslation, setLanguage } = useLanguage();
 
   // Function to handle language change
   const handleLanguageChange = (lang: string) => {
@@ -43,10 +51,10 @@ function LoginPage({
         >
           {/* Welcome message */}
           <h1 className="text-[1.5rem] md:text-[2.2rem]">
-            {t("login.welcome_title")}
+            {getTranslation("login.welcome_title")}
           </h1>
           <p className="text-[0.8rem] px-5 md:text-[1.1rem]">
-            {t("login.password_prompt")}
+            {getTranslation("login.password_prompt")}
           </p>
           {/* Password input form */}
           <form
@@ -55,7 +63,7 @@ function LoginPage({
           >
             <input
               type="password"
-              placeholder={t("login.password_placeholder")}
+              placeholder={getTranslation("login.password_placeholder")}
               className="border p-2 w-full text-center focus:outline-none"
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
@@ -65,7 +73,7 @@ function LoginPage({
               type="submit"
               className="bg-neutral-700 text-neutral-50 p-2 mt-2 hover:bg-neutral-600 cursor-pointer w-full"
             >
-              {t("login.enter_button")}
+              {getTranslation("login.enter_button")}
             </button>
           </form>
           {errorMessage && (

@@ -4,8 +4,13 @@ import Header from "./Header";
 import Section from "./Section";
 import RSVP from "./RSVP";
 
-function GuestPage({ setLoggedInView, setIsFading }) {
-  const { t } = useLanguage();
+interface GuestPageProps {
+  setLoggedInView: (view: "login" | "guest" | "couple") => void;
+  setIsFading: (isFading: boolean) => void;
+}
+
+function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
+  const { getTranslation } = useLanguage();
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
@@ -25,41 +30,41 @@ function GuestPage({ setLoggedInView, setIsFading }) {
           setIsFading={setIsFading}
         />
         <Section
-          title={t("guest_view.about_us_title")}
+          title={getTranslation("guest_view.about_us_title")}
           content="content"
           id={"about-us"}
           dark
         />
         <Section
-          title={t("guest_view.location_title")}
+          title={getTranslation("guest_view.location_title")}
           content="content"
           id={"venue"}
         />
         <Section
-          title={t("guest_view.accomodation_title")}
+          title={getTranslation("guest_view.accomodation_title")}
           content="content"
           id={"accomodation"}
           dark
         />
         <Section
-          title={t("guest_view.food_title")}
+          title={getTranslation("guest_view.food_title")}
           content="content"
           id={"menu"}
         />
         <Section
-          title={t("guest_view.dress_code_title")}
+          title={getTranslation("guest_view.dress_code_title")}
           content="content"
           id={"dress-code"}
           dark
         />
         <Section
-          title={t("guest_view.gifts_title")}
+          title={getTranslation("guest_view.gifts_title")}
           content="content"
           id={"gifts"}
         />
         <Section
-          title={t("guest_view.rsvp_title")}
-          content="content"
+          title={getTranslation("guest_view.rsvp_title")}
+          content=""
           id={"rsvp"}
           dark
         >
