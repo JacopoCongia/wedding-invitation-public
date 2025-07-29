@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { useLanguage } from "../hooks/useLanguage";
+import { useMenu } from "../hooks/useMenu";
+import { getNavigationLinks } from "../config/getNavigationLinks";
 
 interface HeaderProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
@@ -8,18 +9,13 @@ interface HeaderProps {
 }
 
 function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
+  // Use the custom hook to access the language context
   const { getTranslation, setLanguage } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const links = [
-    { label: getTranslation("header.about_us"), id: "about-us" },
-    { label: getTranslation("header.location"), id: "venue" },
-    { label: getTranslation("header.accomodation"), id: "accomodation" },
-    { label: getTranslation("header.food"), id: "menu" },
-    { label: getTranslation("header.dress_code"), id: "dress-code" },
-    { label: getTranslation("header.gifts"), id: "gifts" },
-    { label: getTranslation("header.rsvp"), id: "rsvp" },
-  ];
+  // Use the custom hook to access the menu context
+  const { isMenuOpen, toggleMenu, closeMenu } = useMenu();
+
+  const links = getNavigationLinks(getTranslation);
 
   // Function to handle language change
   const handleLanguageChange = (lang: "en" | "it") => {
@@ -40,10 +36,9 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
   // Function to handle the click event and scroll to the section with the corresponding ID
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
-
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false); // Close the menu after clicking a link
+      closeMenu(); // Close the menu after clicking a link
     }
   };
 
@@ -62,11 +57,10 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
     <>
       {/* Language selection UI */}
 
-      <header className="flex text-[0.8rem] justify-center items-center sticky top-0 z-50 p-4 bg-neutral-50 lg:text-[1rem]">
+      <header className="flex text-[0.9rem] justify-center items-center sticky top-0 z-50 p-4 bg-neutral-50 lg:text-[1rem]">
+        {/* Go back button */}
         <button
-          onClick={(e) => {
-            handleGoBackClick(e);
-          }}
+          onClick={handleGoBackClick}
           aria-label="Back to login"
           className="cursor-pointer hidden min-[850px]:flex"
         >
@@ -92,9 +86,9 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
         </button>
         {/* Hamburger/X menu for mobile */}
         <button
-          className="flex items-center min-[850px]:hidden"
+          className="flex items-center cursor-pointer excluded-from-click min-[850px]:hidden"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          onClick={() => setIsMenuOpen((open) => !open)}
+          onClick={toggleMenu}
         >
           {isMenuOpen ? (
             // X icon
@@ -159,7 +153,8 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
         <div className="hidden flex-1 gap-5 justify-center min-[850px]:flex lg:gap-9">
           {content}
         </div>
-        <div className="flex gap-3 ml-auto">
+        {/* Language selection UI */}
+        <div className="flex gap-3 ml-auto excluded-from-click">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}

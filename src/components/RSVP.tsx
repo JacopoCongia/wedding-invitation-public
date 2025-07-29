@@ -76,7 +76,7 @@ function RSVP() {
   };
 
   return (
-    <div className="flex flex-colitems-center w-[90%] sm:w-[450px]">
+    <div className="flex items-center w-[90%] sm:w-[500px]">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full text-center"
@@ -111,6 +111,7 @@ function RSVP() {
           onChange={handleChange}
         />
         {/* END Last Name */}
+
         {/* Email */}
         <label htmlFor="email">
           {getTranslation("guest_view.rsvp_email_label")}
@@ -175,149 +176,18 @@ function RSVP() {
           </div>
         </div>
         {/* END Attendance */}
-        {/* Menu */}
-        <label htmlFor="menu">
-          {getTranslation("guest_view.rsvp_menu_label")}
-        </label>
-        <div className="flex gap-3 mt-1 mb-4 text-center">
-          <div className="flex items-center flex-1">
-            <label
-              htmlFor="menu-regular"
-              className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                form.menu === "regular"
-                  ? "bg-teal-500 text-neutral-50"
-                  : "bg-neutral-50 text-neutral-700"
-              } hover:bg-teal-500 hover:text-neutral-50`}
-            >
-              {getTranslation("guest_view.rsvp_regular_label")}
+        {form.attendance === "yes" && (
+          <div>
+            {/* Menu */}
+            <label htmlFor="menu">
+              {getTranslation("guest_view.rsvp_menu_label")}
             </label>
-            <input
-              type="radio"
-              id="menu-regular"
-              name="menu"
-              value="regular"
-              checked={form.menu === "regular"}
-              onChange={handleChange}
-              required
-              className="hidden"
-            />
-          </div>
-          <div className="flex items-center flex-1">
-            <label
-              htmlFor="menu-vegetarian"
-              className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                form.menu === "vegetarian"
-                  ? "bg-teal-500 text-neutral-50"
-                  : "bg-neutral-50 text-neutral-700"
-              } hover:bg-teal-500 hover:text-neutral-50`}
-            >
-              {getTranslation("guest_view.rsvp_vegetarian_label")}
-            </label>
-            <input
-              type="radio"
-              id="menu-vegetarian"
-              name="menu"
-              value="vegetarian"
-              checked={form.menu === "vegetarian"}
-              onChange={handleChange}
-              required
-              className="hidden"
-            />
-          </div>
-        </div>
-        {/* END Menu */}
-        {/* Plus Ones */}
-        {/* Render plus ones based on the number selected */}
-        <label
-          htmlFor="plusOnes"
-          className="mt-2"
-        >
-          {getTranslation("guest_view.rsvp_plus_one_label")}
-        </label>
-        {/* Render the plus one radio buttons */}
-        <div className="flex gap-2 mt-1 mb-4 text-center sm:gap-3">
-          {plusOnesRadios.map((radio) => (
-            <div
-              key={radio.id}
-              className="flex items-center flex-1"
-            >
-              <label
-                htmlFor={radio.id}
-                className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                  form.plusOnes.length === radio.value
-                    ? "bg-teal-500 text-neutral-50"
-                    : "bg-neutral-50 text-neutral-700"
-                } hover:bg-teal-500 hover:text-neutral-50`}
-              >
-                {radio.value}
-              </label>
-              <input
-                type="radio"
-                id={radio.id}
-                name="plusOnes"
-                value={radio.value}
-                checked={form.plusOnes.length === radio.value}
-                onChange={handlePlusOnesChange}
-                className="hidden"
-              />
-            </div>
-          ))}
-        </div>
-        {/* Render plus ones input fields */}
-        {form.plusOnes.map((plusOne, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col gap-2 mb-4 pb-4 border-b border-neutral-200"
-          >
-            <h1>
-              {getTranslation("guest_view.rsvp_plus_one")} {idx + 1}
-            </h1>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                name="firstName"
-                placeholder={
-                  getTranslation("guest_view.rsvp_name_label") + ` +${idx + 1}`
-                }
-                className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
-                value={plusOne.firstName}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  setForm((prev) => {
-                    const plusOnes = [...prev.plusOnes];
-                    plusOnes[idx].firstName = value;
-                    return { ...prev, plusOnes };
-                  });
-                }}
-                required
-              />
-              <input
-                type="text"
-                name="lastName"
-                placeholder={
-                  getTranslation("guest_view.rsvp_lastname_label") +
-                  ` +${idx + 1}`
-                }
-                className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
-                value={plusOne.lastName}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  setForm((prev) => {
-                    const plusOnes = [...prev.plusOnes];
-                    plusOnes[idx].lastName = value;
-                    return { ...prev, plusOnes };
-                  });
-                }}
-                required
-              />
-            </div>
-            {/* Radio Button for the menu choice */}
             <div className="flex gap-3 mt-1 mb-4 text-center">
               <div className="flex items-center flex-1">
                 <label
-                  htmlFor={`menu-regular-${idx}`}
+                  htmlFor="menu-regular"
                   className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                    plusOne.menu === "regular"
+                    form.menu === "regular"
                       ? "bg-teal-500 text-neutral-50"
                       : "bg-neutral-50 text-neutral-700"
                   } hover:bg-teal-500 hover:text-neutral-50`}
@@ -326,27 +196,20 @@ function RSVP() {
                 </label>
                 <input
                   type="radio"
-                  id={`menu-regular-${idx}`}
-                  name={`menu-${idx}`}
+                  id="menu-regular"
+                  name="menu"
                   value="regular"
-                  checked={plusOne.menu === "regular"}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    setForm((prev) => {
-                      const plusOnes = [...prev.plusOnes];
-                      plusOnes[idx].menu = value;
-                      return { ...prev, plusOnes };
-                    });
-                  }}
+                  checked={form.menu === "regular"}
+                  onChange={handleChange}
                   required
                   className="hidden"
                 />
               </div>
               <div className="flex items-center flex-1">
                 <label
-                  htmlFor={`menu-vegetarian-${idx}`}
+                  htmlFor="menu-vegetarian"
                   className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                    plusOne.menu === "vegetarian"
+                    form.menu === "vegetarian"
                       ? "bg-teal-500 text-neutral-50"
                       : "bg-neutral-50 text-neutral-700"
                   } hover:bg-teal-500 hover:text-neutral-50`}
@@ -355,26 +218,175 @@ function RSVP() {
                 </label>
                 <input
                   type="radio"
-                  id={`menu-vegetarian-${idx}`}
-                  name={`menu-${idx}`}
+                  id="menu-vegetarian"
+                  name="menu"
                   value="vegetarian"
-                  checked={plusOne.menu === "vegetarian"}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    setForm((prev) => {
-                      const plusOnes = [...prev.plusOnes];
-                      plusOnes[idx].menu = value;
-                      return { ...prev, plusOnes };
-                    });
-                  }}
+                  checked={form.menu === "vegetarian"}
+                  onChange={handleChange}
                   required
                   className="hidden"
                 />
               </div>
             </div>
+            {/* END Menu */}
+
+            {/* Plus Ones */}
+            {/* Render plus ones based on the number selected */}
+            <label
+              htmlFor="plusOnes"
+              className="mt-2"
+            >
+              {getTranslation("guest_view.rsvp_plus_one_label")}
+            </label>
+            {/* Render the plus one radio buttons */}
+            <div className="flex gap-2 mt-1 mb-4 text-center sm:gap-3">
+              {plusOnesRadios.map((radio) => (
+                <div
+                  key={radio.id}
+                  className="flex items-center flex-1"
+                >
+                  <label
+                    htmlFor={radio.id}
+                    className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                      form.plusOnes.length === radio.value
+                        ? "bg-teal-500 text-neutral-50"
+                        : "bg-neutral-50 text-neutral-700"
+                    } hover:bg-teal-500 hover:text-neutral-50`}
+                  >
+                    {radio.value}
+                  </label>
+                  <input
+                    type="radio"
+                    id={radio.id}
+                    name="plusOnes"
+                    value={radio.value}
+                    checked={form.plusOnes.length === radio.value}
+                    onChange={handlePlusOnesChange}
+                    className="hidden"
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Render plus ones input fields */}
+            {form.plusOnes.map((plusOne, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col gap-2 mb-4 pb-4 border-b border-neutral-200"
+              >
+                <h1>
+                  {getTranslation("guest_view.rsvp_plus_one")} {idx + 1}
+                </h1>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    name="firstName"
+                    placeholder={
+                      getTranslation("guest_view.rsvp_name_label") +
+                      ` +${idx + 1}`
+                    }
+                    className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
+                    value={plusOne.firstName}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setForm((prev) => {
+                        const plusOnes = [...prev.plusOnes];
+                        plusOnes[idx].firstName = value;
+                        return { ...prev, plusOnes };
+                      });
+                    }}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder={
+                      getTranslation("guest_view.rsvp_lastname_label") +
+                      ` +${idx + 1}`
+                    }
+                    className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
+                    value={plusOne.lastName}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setForm((prev) => {
+                        const plusOnes = [...prev.plusOnes];
+                        plusOnes[idx].lastName = value;
+                        return { ...prev, plusOnes };
+                      });
+                    }}
+                    required
+                  />
+                </div>
+                {/* Radio Button for the menu choice */}
+                <div className="flex gap-3 mt-1 mb-4 text-center">
+                  <div className="flex items-center flex-1">
+                    {/* Menu Regular Plus Ones */}
+                    <label
+                      htmlFor={`menu-regular-${idx}`}
+                      className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                        plusOne.menu === "regular"
+                          ? "bg-teal-500 text-neutral-50"
+                          : "bg-neutral-50 text-neutral-700"
+                      } hover:bg-teal-500 hover:text-neutral-50`}
+                    >
+                      {getTranslation("guest_view.rsvp_regular_label")}
+                    </label>
+                    <input
+                      type="radio"
+                      id={`menu-regular-${idx}`}
+                      name={`menu-${idx}`}
+                      value="regular"
+                      checked={plusOne.menu === "regular"}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        setForm((prev) => ({
+                          ...prev,
+                          plusOnes: prev.plusOnes.map((po, i) =>
+                            i === idx ? { ...po, menu: value } : po
+                          ),
+                        }));
+                      }}
+                      required
+                      className="hidden"
+                    />
+                  </div>
+                  <div className="flex items-center flex-1">
+                    {/* Menu Vegetarian Plus Ones */}
+                    <label
+                      htmlFor={`menu-vegetarian-${idx}`}
+                      className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                        plusOne.menu === "vegetarian"
+                          ? "bg-teal-500 text-neutral-50"
+                          : "bg-neutral-50 text-neutral-700"
+                      } hover:bg-teal-500 hover:text-neutral-50`}
+                    >
+                      {getTranslation("guest_view.rsvp_vegetarian_label")}
+                    </label>
+                    <input
+                      type="radio"
+                      id={`menu-vegetarian-${idx}`}
+                      name={`menu-${idx}`}
+                      value="vegetarian"
+                      checked={plusOne.menu === "vegetarian"}
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        setForm((prev) => ({
+                          ...prev,
+                          plusOnes: prev.plusOnes.map((po, i) =>
+                            i === idx ? { ...po, menu: value } : po
+                          ),
+                        }));
+                      }}
+                      required
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            {/* End of plus ones selection */}
           </div>
-        ))}
-        {/* End of plus ones selection */}
+        )}
+
         {/* Submit Form Button */}
         <button
           type="submit"

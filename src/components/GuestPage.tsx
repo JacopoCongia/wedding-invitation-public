@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../hooks/useLanguage";
 import Header from "./Header";
+import Sidebar from "./Sidebar";
 import Section from "./Section";
 import RSVP from "./RSVP";
 
@@ -25,6 +26,11 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
         } transition-opacity duration-400`}
       >
         <Header
+          setLoggedInView={setLoggedInView}
+          setFadeIn={setFadeIn}
+          setIsFading={setIsFading}
+        />
+        <Sidebar
           setLoggedInView={setLoggedInView}
           setFadeIn={setFadeIn}
           setIsFading={setIsFading}

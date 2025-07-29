@@ -50,10 +50,10 @@ function LoginPage({
           className={`flex flex-col items-center justify-center text-center gap-1 h-screen bg-neutral-50 text-neutral-700`}
         >
           {/* Welcome message */}
-          <h1 className="text-[1.5rem] md:text-[2.2rem]">
+          <h1 className="text-[1.8rem] px-5 md:text-[2.2rem]">
             {getTranslation("login.welcome_title")}
           </h1>
-          <p className="text-[0.8rem] px-5 md:text-[1.1rem]">
+          <p className="text-[1rem] px-5 md:text-[1.1rem]">
             {getTranslation("login.password_prompt")}
           </p>
           {/* Password input form */}

@@ -15,6 +15,9 @@
     "gifts": "Gifts",
     "rsvp": "RSVP"
   },
+  "sidebar": {
+    "logout": "Back to login"
+  },
   "guest_view": {
     "about_us_title": "About Us",
     "location_title": "Venue",

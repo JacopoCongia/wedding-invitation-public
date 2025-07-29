@@ -15,6 +15,9 @@
     "gifts": "Regali",
     "rsvp": "Conferma Presenza"
   },
+  "sidebar": {
+    "logout": "Torna al login"
+  },
   "guest_view": {
     "about_us_title": "Chi Siamo",
     "location_title": "Dove Siamo",
