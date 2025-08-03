@@ -1,4 +1,12 @@
 {
+  "general": {
+    "yes": "Si",
+    "no": "No",
+    "first_name": "Nome",
+    "last_name": "Cognome",
+    "email": "Email",
+    "loading": "Caricamento..."
+  },
   "login": {
     "welcome_title": "Benvenuti al Nostro Matrimonio!",
     "password_prompt": "Inserisci la password che ti abbiamo fornito per procedere.",
@@ -26,11 +34,8 @@
     "dress_code_title": "Dress Code",
     "gifts_title": "Lista Regali",
     "rsvp_title": "Conferma Presenza",
-    "rsvp_name_label": "Nome",
     "rsvp_name_placeholder": "Inserisci il tuo nome",
-    "rsvp_lastname_label": "Cognome",
     "rsvp_lastname_placeholder": "Inserisci il tuo cognome",
-    "rsvp_email_label": "Email",
     "rsvp_email_placeholder": "Inserisci la tua email",
     "rsvp_plus_one_label": "Numero di Accompagnatori",
     "rsvp_menu_label": "Preferenza Menù",
@@ -41,16 +46,23 @@
     "rsvp_selection_none": "Nessuno",
     "rsvp_plus_ones": "Numero di Accompagnatori",
     "rsvp_plus_one": "Accompagnatore",
-    "yes": "Si",
-    "no": "No",
+    "rsvp_validation_name": "Il nome è obbligatorio.",
+    "rsvp_validation_lastname": "Il cognome è obbligatorio.",
+    "rsvp_validation_email": "È richiesta un'email valida.",
+    "rsvp_validation_email_invalid": "Inserisci un indirizzo email valido.",
+    "rsvp_validation_attendance": "Seleziona se parteciperai.",
+    "rsvp_validation_menu": "Seleziona una preferenza per il menù.",
+
     "submit_rsvp": "Invia Conferma",
     "rsvp_success": "Grazie per la tua conferma!",
-    "rsvp_error": "Si è verificato un errore nell'invio della conferma. Riprova."
+    "rsvp_error": "Si è verificato un errore nell'invio della conferma. Riprova.",
+    "rsvp_message_success": "La tua conferma è stata inviata con successo! \nDovresti ricevere un'email di conferma a breve."
   },
   "couple_view": {
-    "dashboard_title": "Pannello degli Sposi",
+    "dashboard_title": "Pagina degli Sposi",
+    "rsvp_count": "Totale Conferme",
+    "no_rsvps": "Nessuna conferma al momento :(",
     "guest_list": "Lista Ospiti",
-    "name_column": "Nome",
     "plus_one_column": "Accompagnatori",
     "menu_column": "Menù",
     "attending_column": "Partecipa"

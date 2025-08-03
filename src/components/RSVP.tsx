@@ -1,20 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "../hooks/useLanguage";
-
-interface FormState {
-  firstName: string;
-  lastName: string;
-  email: string;
-  attendance: string;
-  menu: string;
-  plusOnes: PlusOne[];
-}
-
-interface PlusOne {
-  firstName: string;
-  lastName: string;
-  menu: string;
-}
+import { type FormState } from "../types/rsvp-form";
+import { submitRSVP } from "../utils/firestore";
 
 function RSVP() {
   const { getTranslation } = useLanguage();
@@ -27,6 +14,9 @@ function RSVP() {
     menu: "",
     plusOnes: [],
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const plusOnesRadios = [
     { id: "plusOnes-0", name: "plusOnes", value: 0 },
@@ -40,6 +30,13 @@ function RSVP() {
   // Handle changes for the main form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (value === "no") {
+      setForm((prev) => ({
+        ...prev,
+        menu: "",
+        plusOnes: [],
+      }));
+    }
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -54,11 +51,11 @@ function RSVP() {
       if (newCount > plusOnes.length) {
         // Add empty plus ones
         plusOnes = plusOnes.concat(
-          Array(newCount - plusOnes.length).fill({
+          Array.from({ length: newCount - plusOnes.length }, () => ({
             firstName: "",
             lastName: "",
             menu: "",
-          })
+          }))
         );
       } else {
         // Remove extra plus ones
@@ -68,13 +65,131 @@ function RSVP() {
     });
   };
 
-  // Form submission handler
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // FORM SUBMISSION LOGIC HERE
-    console.log(form);
+  // Validate the form fields
+  const validateForm = (): Record<string, string> => {
+    const newErrors: Record<string, string> = {};
+
+    // Validate main guest info
+    if (!form.firstName.trim()) {
+      newErrors.firstName = getTranslation("guest_view.rsvp_validation_name");
+    }
+    if (!form.lastName.trim()) {
+      newErrors.lastName = getTranslation(
+        "guest_view.rsvp_validation_lastname"
+      );
+    }
+    if (!form.email.trim()) {
+      newErrors.email = getTranslation("guest_view.rsvp_validation_email");
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = getTranslation(
+        "guest_view.rsvp_validation_email_invalid"
+      );
+    }
+    if (!form.attendance) {
+      newErrors.attendance = getTranslation(
+        "guest_view.rsvp_validation_attendance"
+      );
+    }
+
+    // Validate conditional fields if attending
+    if (form.attendance === "yes") {
+      if (!form.menu)
+        newErrors.menu = getTranslation("guest_view.rsvp_validation_menu");
+
+      // Validate each plus one
+      form.plusOnes.forEach((plusOne, index) => {
+        if (!plusOne.firstName.trim()) {
+          newErrors[`plusOneFirstName${index}`] = getTranslation(
+            "guest_view.rsvp_validation_name"
+          );
+        }
+        if (!plusOne.lastName.trim()) {
+          newErrors[`plusOneLastName${index}`] = getTranslation(
+            "guest_view.rsvp_validation_lastname"
+          );
+        }
+        if (!plusOne.menu) {
+          newErrors[`plusOneMenu${index}`] = getTranslation(
+            "guest_view.rsvp_validation_menu"
+          );
+        }
+      });
+    }
+
+    return newErrors;
   };
 
+  // Form submission handler
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    // If there are no errors, proceed with submission
+
+    if (Object.keys(validationErrors).length === 0) {
+      setIsSubmitting(true);
+      try {
+        // FORM SUBMISSION LOGIC HERE -- FIREBASE ETC
+        console.log("Form is valid, submitting...", form);
+        // alert("RSVP submitted successfully!");
+        await Promise.resolve(submitRSVP(form)).catch((error) => {
+          throw error;
+        });
+        // Reset the form after successful submission
+        setForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          attendance: "",
+          menu: "",
+          plusOnes: [],
+        });
+        // Set submitted state to true to show success message
+        setIsSubmitted(true);
+        // ### IMPLEMENT CONFIRMATION EMAIL SERVICE ###
+      } catch (error) {
+        console.error("Submission failed:", error);
+        alert("There was an error submitting your RSVP. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      console.log("Validation Errors:", validationErrors);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      // Clear errors after a delay
+      const timer = setTimeout(() => {
+        setErrors({});
+      }, 5000);
+
+      // Cleanup timer if component unmounts or errors change
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
+
+  // If the form is submitting, show a loading message
+  if (isSubmitting) {
+    return (
+      <div className="text-center text-[1.8rem] whitespace-pre-line leading-12">
+        <p>{getTranslation("general.loading")}</p>
+      </div>
+    );
+  }
+
+  // If the form is submitted, show a success message
+  if (isSubmitted) {
+    return (
+      <div className="text-center text-[1.8rem] whitespace-pre-line leading-12">
+        <p>{getTranslation("guest_view.rsvp_message_success")}</p>
+      </div>
+    );
+  }
+
+  // Render the RSVP form
   return (
     <div className="flex items-center w-[90%] sm:w-[500px]">
       <form
@@ -82,23 +197,32 @@ function RSVP() {
         className="flex flex-col w-full text-center"
       >
         {/* First Name */}
-        <label htmlFor="firstName">
-          {getTranslation("guest_view.rsvp_name_label")}
+        <label
+          htmlFor="firstName"
+          className={errors.firstName ? "text-red-500" : ""}
+        >
+          {errors.firstName
+            ? errors.firstName
+            : getTranslation("general.first_name")}
         </label>
         <input
           type="text"
           id="firstName"
           name="firstName"
           placeholder={getTranslation("guest_view.rsvp_name_placeholder")}
-          className="bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center"
-          required
+          className={`bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center`}
           value={form.firstName}
           onChange={handleChange}
         />
         {/* END First Name */}
         {/* Last Name */}
-        <label htmlFor="lastName">
-          {getTranslation("guest_view.rsvp_lastname_label")}
+        <label
+          htmlFor="lastName"
+          className={errors.lastName ? "text-red-500" : ""}
+        >
+          {errors.lastName
+            ? errors.lastName
+            : getTranslation("general.last_name")}
         </label>
         <input
           type="text"
@@ -106,15 +230,17 @@ function RSVP() {
           name="lastName"
           placeholder={getTranslation("guest_view.rsvp_lastname_placeholder")}
           className="bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center"
-          required
           value={form.lastName}
           onChange={handleChange}
         />
         {/* END Last Name */}
 
         {/* Email */}
-        <label htmlFor="email">
-          {getTranslation("guest_view.rsvp_email_label")}
+        <label
+          htmlFor="email"
+          className={errors.email ? "text-red-500" : ""}
+        >
+          {errors.email ? errors.email : getTranslation("general.email")}
         </label>
         <input
           type="email"
@@ -122,14 +248,21 @@ function RSVP() {
           name="email"
           placeholder={getTranslation("guest_view.rsvp_email_placeholder")}
           className="bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center"
-          required
           value={form.email}
           onChange={handleChange}
         />
         {/* END Email */}
         {/* Attendance */}
-        <label>{getTranslation("guest_view.rsvp_attending_label")}</label>
-        <div className="flex gap-3 mt-1 mb-4 text-center">
+        <label className={errors.attendance ? "text-red-500" : ""}>
+          {errors.attendance
+            ? errors.attendance
+            : getTranslation("guest_view.rsvp_attending_label")}
+        </label>
+        <div
+          className={`flex gap-3 mt-1 mb-4 text-center ${
+            errors.attendance ? "border-2 rounded border-red-500 p-2" : ""
+          }`}
+        >
           <div className="flex items-center flex-1">
             <label
               htmlFor="attendance-yes"
@@ -137,9 +270,9 @@ function RSVP() {
                 form.attendance === "yes"
                   ? "bg-teal-500 text-neutral-50"
                   : "bg-neutral-50 text-neutral-700"
-              } hover:bg-teal-500 hover:text-neutral-50`}
+              } hover:bg-teal-500 hover:text-neutral-50 $`}
             >
-              {getTranslation("guest_view.yes")}
+              {getTranslation("general.yes")}
             </label>
             <input
               type="radio"
@@ -148,7 +281,6 @@ function RSVP() {
               value="yes"
               checked={form.attendance === "yes"}
               onChange={handleChange}
-              required
               className="hidden"
             />
           </div>
@@ -161,7 +293,7 @@ function RSVP() {
                   : "bg-neutral-50 text-neutral-700"
               } hover:bg-teal-500 hover:text-neutral-50`}
             >
-              {getTranslation("guest_view.no")}
+              {getTranslation("general.no")}
             </label>
             <input
               type="radio"
@@ -170,7 +302,6 @@ function RSVP() {
               value="no"
               checked={form.attendance === "no"}
               onChange={handleChange}
-              required
               className="hidden"
             />
           </div>
@@ -179,10 +310,19 @@ function RSVP() {
         {form.attendance === "yes" && (
           <div>
             {/* Menu */}
-            <label htmlFor="menu">
-              {getTranslation("guest_view.rsvp_menu_label")}
+            <label
+              htmlFor="menu"
+              className={errors.menu ? "text-red-500" : ""}
+            >
+              {errors.menu
+                ? errors.menu
+                : getTranslation("guest_view.rsvp_menu_label")}
             </label>
-            <div className="flex gap-3 mt-1 mb-4 text-center">
+            <div
+              className={`flex gap-3 mt-1 mb-4 text-center ${
+                errors.menu ? "border-2 rounded border-red-500 p-2" : ""
+              }`}
+            >
               <div className="flex items-center flex-1">
                 <label
                   htmlFor="menu-regular"
@@ -201,7 +341,6 @@ function RSVP() {
                   value="regular"
                   checked={form.menu === "regular"}
                   onChange={handleChange}
-                  required
                   className="hidden"
                 />
               </div>
@@ -223,12 +362,11 @@ function RSVP() {
                   value="vegetarian"
                   checked={form.menu === "vegetarian"}
                   onChange={handleChange}
-                  required
                   className="hidden"
                 />
               </div>
+              {/* END Menu */}
             </div>
-            {/* END Menu */}
 
             {/* Plus Ones */}
             {/* Render plus ones based on the number selected */}
@@ -238,7 +376,7 @@ function RSVP() {
             >
               {getTranslation("guest_view.rsvp_plus_one_label")}
             </label>
-            {/* Render the plus one radio buttons */}
+            {/* Render the plus ones radio buttons (to add/remove plus ones) */}
             <div className="flex gap-2 mt-1 mb-4 text-center sm:gap-3">
               {plusOnesRadios.map((radio) => (
                 <div
@@ -276,15 +414,20 @@ function RSVP() {
                 <h1>
                   {getTranslation("guest_view.rsvp_plus_one")} {idx + 1}
                 </h1>
+                {/* Plus one first name */}
                 <div className="flex gap-2">
                   <input
                     type="text"
                     name="firstName"
                     placeholder={
-                      getTranslation("guest_view.rsvp_name_label") +
-                      ` +${idx + 1}`
+                      errors[`plusOneFirstName${idx}`]
+                        ? errors[`plusOneFirstName${idx}`]
+                        : getTranslation("guest_view.rsvp_name_label") +
+                          ` +${idx + 1}`
                     }
-                    className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
+                    className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
+                      errors[`plusOneFirstName${idx}`] ? "text-red-500" : ""
+                    }`}
                     value={plusOne.firstName}
                     onChange={(e) => {
                       const { value } = e.target;
@@ -294,16 +437,20 @@ function RSVP() {
                         return { ...prev, plusOnes };
                       });
                     }}
-                    required
                   />
+                  {/* Plus one last name */}
                   <input
                     type="text"
                     name="lastName"
                     placeholder={
-                      getTranslation("guest_view.rsvp_lastname_label") +
-                      ` +${idx + 1}`
+                      errors[`plusOneLastName${idx}`]
+                        ? errors[`plusOneLastName${idx}`]
+                        : getTranslation("guest_view.rsvp_lastname_label") +
+                          ` +${idx + 1}`
                     }
-                    className="bg-neutral-50 p-2 text-neutral-700 w-full text-center"
+                    className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
+                      errors[`plusOneLastName${idx}`] ? "text-red-500" : ""
+                    }`}
                     value={plusOne.lastName}
                     onChange={(e) => {
                       const { value } = e.target;
@@ -313,11 +460,20 @@ function RSVP() {
                         return { ...prev, plusOnes };
                       });
                     }}
-                    required
                   />
                 </div>
-                {/* Radio Button for the menu choice */}
-                <div className="flex gap-3 mt-1 mb-4 text-center">
+                {/* Radio Button for the plus ones menu choice */}
+                {errors[`plusOneMenu${idx}`] && (
+                  <p className="text-red-500 mb-[-10px]">
+                    {errors[`plusOneMenu${idx}`]}
+                  </p>
+                )}
+                <div
+                  className={`flex gap-3 mt-1 mb-4 text-center ${
+                    errors[`plusOneMenu${idx}`] &&
+                    "border-2 rounded border-red-500 p-2"
+                  }`}
+                >
                   <div className="flex items-center flex-1">
                     {/* Menu Regular Plus Ones */}
                     <label
@@ -345,7 +501,6 @@ function RSVP() {
                           ),
                         }));
                       }}
-                      required
                       className="hidden"
                     />
                   </div>
@@ -376,7 +531,6 @@ function RSVP() {
                           ),
                         }));
                       }}
-                      required
                       className="hidden"
                     />
                   </div>

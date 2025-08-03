@@ -1,14 +1,20 @@
 import { useLanguage } from "../hooks/useLanguage";
 import { useMenu } from "../hooks/useMenu";
-import { getNavigationLinks } from "../config/getNavigationLinks";
+import { getNavigationLinks } from "../utils/getNavigationLinks";
 
 interface HeaderProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
   setFadeIn: (fadeIn: boolean) => void;
   setIsFading: (isFading: boolean) => void;
+  showNavigation?: boolean;
 }
 
-function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
+function Header({
+  setLoggedInView,
+  setFadeIn,
+  setIsFading,
+  showNavigation = false,
+}: HeaderProps) {
   // Use the custom hook to access the language context
   const { getTranslation, setLanguage } = useLanguage();
 
@@ -43,26 +49,30 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
   };
 
   // Map through the links and render buttons for each link
-  const content = links.map((link) => (
-    <button
-      key={link.id}
-      onClick={() => handleClick(link.id)}
-      className="cursor-pointer hover:text-neutral-500"
-    >
-      {link.label}
-    </button>
-  ));
+  let navigationContent = null;
+  if (showNavigation) {
+    navigationContent = links.map((link) => (
+      <button
+        key={link.id}
+        onClick={() => handleClick(link.id)}
+        className="cursor-pointer hover:text-neutral-500"
+      >
+        {link.label}
+      </button>
+    ));
+  }
 
   return (
     <>
       {/* Language selection UI */}
-
       <header className="flex text-[0.9rem] justify-center items-center sticky top-0 z-50 p-4 bg-neutral-50 lg:text-[1rem]">
         {/* Go back button */}
         <button
           onClick={handleGoBackClick}
           aria-label="Back to login"
-          className="cursor-pointer hidden min-[850px]:flex"
+          className={`cursor-pointer ${
+            showNavigation ? "hidden min-[850px]:flex" : ""
+          }`}
         >
           <svg
             width="24"
@@ -85,74 +95,78 @@ function Header({ setLoggedInView, setFadeIn, setIsFading }: HeaderProps) {
           </svg>
         </button>
         {/* Hamburger/X menu for mobile */}
-        <button
-          className="flex items-center cursor-pointer excluded-from-click min-[850px]:hidden"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          onClick={toggleMenu}
-        >
-          {isMenuOpen ? (
-            // X icon
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-neutral-700"
-            >
-              <line
-                x1="18"
-                y1="6"
-                x2="6"
-                y2="18"
-              />
-              <line
-                x1="6"
-                y1="6"
-                x2="18"
-                y2="18"
-              />
-            </svg>
-          ) : (
-            // Hamburger icon
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-neutral-700"
-            >
-              <line
-                x1="4"
-                y1="7"
-                x2="20"
-                y2="7"
-              />
-              <line
-                x1="4"
-                y1="12"
-                x2="20"
-                y2="12"
-              />
-              <line
-                x1="4"
-                y1="17"
-                x2="20"
-                y2="17"
-              />
-            </svg>
-          )}
-        </button>
-        <div className="hidden flex-1 gap-5 justify-center min-[850px]:flex lg:gap-9">
-          {content}
-        </div>
+        {showNavigation && (
+          <button
+            className="flex items-center cursor-pointer excluded-from-click min-[850px]:hidden"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? (
+              // X icon
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-neutral-700"
+              >
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                />
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                />
+              </svg>
+            ) : (
+              // Hamburger icon
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-neutral-700"
+              >
+                <line
+                  x1="4"
+                  y1="7"
+                  x2="20"
+                  y2="7"
+                />
+                <line
+                  x1="4"
+                  y1="12"
+                  x2="20"
+                  y2="12"
+                />
+                <line
+                  x1="4"
+                  y1="17"
+                  x2="20"
+                  y2="17"
+                />
+              </svg>
+            )}
+          </button>
+        )}
+        {
+          <div className="hidden flex-1 gap-5 justify-center min-[850px]:flex lg:gap-9">
+            {navigationContent}
+          </div>
+        }
         {/* Language selection UI */}
         <div className="flex gap-3 ml-auto excluded-from-click">
           <p

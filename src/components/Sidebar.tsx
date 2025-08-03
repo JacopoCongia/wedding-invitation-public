@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { getNavigationLinks } from "../config/getNavigationLinks";
+import { getNavigationLinks } from "../utils/getNavigationLinks";
 import { useLanguage } from "../hooks/useLanguage";
 import { useMenu } from "../hooks/useMenu";
 
@@ -89,7 +89,7 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
         {content}
         <div
           onClick={handleGoBackClick}
-          className="flex items-center fixed bottom-25 gap-3 cursor-pointer ml-[-26px]"
+          className="flex items-center mt-10 gap-3 cursor-pointer ml-[-26px]"
         >
           <button
             aria-label="Back to login"
@@ -115,9 +115,9 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
               />
             </svg>
           </button>
-          <div className="text-neutral-700">
+          <h1 className="text-neutral-700">
             {getTranslation("sidebar.logout")}
-          </div>
+          </h1>
         </div>
       </div>
     </>

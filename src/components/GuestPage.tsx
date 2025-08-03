@@ -29,6 +29,7 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
           setLoggedInView={setLoggedInView}
           setFadeIn={setFadeIn}
           setIsFading={setIsFading}
+          showNavigation
         />
         <Sidebar
           setLoggedInView={setLoggedInView}

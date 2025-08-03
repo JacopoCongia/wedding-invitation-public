@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLanguage } from "./hooks/useLanguage";
 import LoginPage from "./components/LoginPage";
 import GuestPage from "./components/GuestPage";
+import CouplePage from "./components/CouplePage";
 
 function App() {
   const { getTranslation } = useLanguage();
@@ -55,6 +56,13 @@ function App() {
 
       {loggedInView === "guest" && (
         <GuestPage
+          setLoggedInView={setLoggedInView}
+          setIsFading={setIsFading}
+        />
+      )}
+
+      {loggedInView === "couple" && (
+        <CouplePage
           setLoggedInView={setLoggedInView}
           setIsFading={setIsFading}
         />

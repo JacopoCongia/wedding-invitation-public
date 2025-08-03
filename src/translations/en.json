@@ -1,4 +1,12 @@
 {
+  "general": {
+    "yes": "Yes",
+    "no": "No",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "loading": "Loading..."
+  },
   "login": {
     "welcome_title": "Welcome to Our Wedding!",
     "password_prompt": "Please enter the password we provided to proceed.",
@@ -26,30 +34,34 @@
     "dress_code_title": "Dress Code",
     "gifts_title": "Gift Registry",
     "rsvp_title": "RSVP",
-    "rsvp_name_label": "Name",
     "rsvp_name_placeholder": "Enter your name",
-    "rsvp_lastname_label": "Last Name",
     "rsvp_lastname_placeholder": "Enter your last name",
-    "rsvp_email_label": "Email",
     "rsvp_email_placeholder": "Enter your email",
     "rsvp_plus_one_label": "Number of Plus Ones",
     "rsvp_plus_one": "Plus One",
-    "rsvp_menu_label": "Menu Preference:",
+    "rsvp_menu_label": "Menu Preference",
     "rsvp_regular_label": "Regular",
     "rsvp_vegetarian_label": "Vegetarian",
     "rsvp_attending_label": "Attending?",
     "rsvp_selection": "Select...",
     "rsvp_selection_none": "None",
-    "yes": "Yes",
-    "no": "No",
+    "rsvp_validation_name": "First name is required.",
+    "rsvp_validation_lastname": "Last name is required.",
+    "rsvp_validation_email": "An email address is required.",
+    "rsvp_validation_email_invalid": "Please enter a valid email address.",
+    "rsvp_validation_attendance": "Please select if you will attend.",
+    "rsvp_validation_menu": "Please select a menu preference.",
+
     "submit_rsvp": "Submit RSVP",
     "rsvp_success": "Thank you for your RSVP!",
-    "rsvp_error": "There was an error submitting your RSVP. Please try again."
+    "rsvp_error": "There was an error submitting your RSVP. Please try again.",
+    "rsvp_message_success": "Your RSVP has been successfully submitted!\nYou should receive a confirmation email shortly."
   },
   "couple_view": {
     "dashboard_title": "Couple's Dashboard",
+    "rsvp_count": "Total RSVPs",
+    "no_rsvps": "No RSVPs yet :(",
     "guest_list": "Guest List",
-    "name_column": "Name",
     "plus_one_column": "Plus Ones",
     "menu_column": "Menu",
     "attending_column": "Attending"
