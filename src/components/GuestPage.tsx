@@ -48,9 +48,9 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
           id={"venue"}
         />
         <Section
-          title={getTranslation("guest_view.accomodation_title")}
+          title={getTranslation("guest_view.accommodation_title")}
           content="content"
-          id={"accomodation"}
+          id={"accommodation"}
           dark
         />
         <Section

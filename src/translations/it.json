@@ -17,7 +17,7 @@
   "header": {
     "about_us": "Chi Siamo",
     "location": "Dove Siamo",
-    "accomodation": "Alloggio",
+    "accommodation": "Alloggio",
     "food": "Menù",
     "dress_code": "Dress Code",
     "gifts": "Regali",
@@ -29,7 +29,7 @@
   "guest_view": {
     "about_us_title": "Chi Siamo",
     "location_title": "Dove Siamo",
-    "accomodation_title": "Alloggio",
+    "accommodation_title": "Alloggio",
     "food_title": "Cibo e Bevande",
     "dress_code_title": "Dress Code",
     "gifts_title": "Lista Regali",
@@ -61,6 +61,9 @@
   "couple_view": {
     "dashboard_title": "Pagina degli Sposi",
     "rsvp_count": "Totale Conferme",
+    "total_guests": "Totale Ospiti",
+    "total_regular_meals": "Totale Pasti Normali",
+    "total_vegetarian_meals": "Totale Pasti Vegetariani",
     "no_rsvps": "Nessuna conferma al momento :(",
     "guest_list": "Lista Ospiti",
     "plus_one_column": "Accompagnatori",

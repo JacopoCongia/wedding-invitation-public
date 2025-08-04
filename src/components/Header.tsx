@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import { useLanguage } from "../hooks/useLanguage";
 import { useMenu } from "../hooks/useMenu";
 import { getNavigationLinks } from "../utils/getNavigationLinks";
@@ -15,6 +17,9 @@ function Header({
   setIsFading,
   showNavigation = false,
 }: HeaderProps) {
+  // State to manage the current section for scrolling
+  const [currentSection, setCurrentSection] = useState("");
+
   // Use the custom hook to access the language context
   const { getTranslation, setLanguage } = useLanguage();
 
@@ -23,10 +28,63 @@ function Header({
 
   const links = getNavigationLinks(getTranslation);
 
+  // Define the header themes
+  const HEADER_THEMES = {
+    light: "bg-neutral-50 text-neutral-700",
+    dark: "bg-neutral-700 text-neutral-50",
+  } as const;
+
+  // Set of sections that should have a dark header
+  const darkSections = new Set(["venue", "menu", "gifts"]);
+
+  // Function to get the current header classes based on the section
+  const getHeaderClasses = () => {
+    return darkSections.has(currentSection)
+      ? HEADER_THEMES.dark
+      : HEADER_THEMES.light;
+  };
+  // Function to get the icon classes based on the current section
+  const getIconClasses = () => {
+    return darkSections.has(currentSection)
+      ? "text-neutral-50"
+      : "text-neutral-700";
+  };
+
   // Function to handle language change
   const handleLanguageChange = (lang: "en" | "it") => {
     setLanguage(lang);
   };
+
+  // Effect to handle scroll events and update the current section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        "about-us",
+        "venue",
+        "accommodation",
+        "menu",
+        "dress-code",
+        "gifts",
+        "rsvp",
+      ];
+
+      // Check each section to see if it's currently in view
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+
+          if (rect.top <= 56 && rect.bottom > 56) {
+            setCurrentSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // Remove event listener on unmount (when the component is removed from the DOM)
+  }, []);
 
   const handleGoBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -65,7 +123,9 @@ function Header({
   return (
     <>
       {/* Language selection UI */}
-      <header className="flex text-[0.9rem] justify-center items-center sticky top-0 z-50 p-4 bg-neutral-50 lg:text-[1rem]">
+      <header
+        className={`flex text-[0.9rem] justify-center items-center sticky top-0 z-50 p-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
+      >
         {/* Go back button */}
         <button
           onClick={handleGoBackClick}
@@ -83,7 +143,7 @@ function Header({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-neutral-700"
+            className={getIconClasses()}
           >
             <polyline points="15 18 9 12 15 6" />
             <line
@@ -112,7 +172,7 @@ function Header({
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-neutral-700"
+                className={getIconClasses()}
               >
                 <line
                   x1="18"

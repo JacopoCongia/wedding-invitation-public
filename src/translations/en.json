@@ -2,7 +2,7 @@
   "general": {
     "yes": "Yes",
     "no": "No",
-    "first_name": "First Name",
+    "first_name": "Name",
     "last_name": "Last Name",
     "email": "Email",
     "loading": "Loading..."
@@ -17,7 +17,7 @@
   "header": {
     "about_us": "About Us",
     "location": "Venue",
-    "accomodation": "Accommodation",
+    "accommodation": "Accommodation",
     "food": "Menu",
     "dress_code": "Dress Code",
     "gifts": "Gifts",
@@ -29,7 +29,7 @@
   "guest_view": {
     "about_us_title": "About Us",
     "location_title": "Venue",
-    "accomodation_title": "Accommodation",
+    "accommodation_title": "Accommodation",
     "food_title": "Food & Drinks",
     "dress_code_title": "Dress Code",
     "gifts_title": "Gift Registry",
@@ -60,6 +60,9 @@
   "couple_view": {
     "dashboard_title": "Couple's Dashboard",
     "rsvp_count": "Total RSVPs",
+    "total_guests": "Total Guests",
+    "total_regular_meals": "Total Regular Meals",
+    "total_vegetarian_meals": "Total Vegetarian Meals",
     "no_rsvps": "No RSVPs yet :(",
     "guest_list": "Guest List",
     "plus_one_column": "Plus Ones",

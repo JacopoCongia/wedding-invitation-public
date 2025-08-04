@@ -422,8 +422,7 @@ function RSVP() {
                     placeholder={
                       errors[`plusOneFirstName${idx}`]
                         ? errors[`plusOneFirstName${idx}`]
-                        : getTranslation("guest_view.rsvp_name_label") +
-                          ` +${idx + 1}`
+                        : getTranslation("general.first_name") + ` +${idx + 1}`
                     }
                     className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
                       errors[`plusOneFirstName${idx}`] ? "text-red-500" : ""
@@ -445,8 +444,7 @@ function RSVP() {
                     placeholder={
                       errors[`plusOneLastName${idx}`]
                         ? errors[`plusOneLastName${idx}`]
-                        : getTranslation("guest_view.rsvp_lastname_label") +
-                          ` +${idx + 1}`
+                        : getTranslation("general.last_name") + ` +${idx + 1}`
                     }
                     className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
                       errors[`plusOneLastName${idx}`] ? "text-red-500" : ""

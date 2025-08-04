@@ -24,8 +24,8 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
     // Function to fetch RSVPs from Firestore
     const loadRSVPs = async () => {
       try {
-        setLoading(true);
         const fetchedRSVPs = await fetchRSVPs();
+        setLoading(true);
         setRsvps(fetchedRSVPs);
         setError(null);
       } catch (err) {
@@ -39,8 +39,6 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
     loadRSVPs();
   }, []);
 
-  console.log("RSVPs:", rsvps);
-
   return (
     <>
       <Header
@@ -53,7 +51,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
           fadeIn ? "opacity-100" : "opacity-0"
         } transition-opacity duration-400 p-8`}
       >
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-3xl font-bold mb-4">
           {getTranslation("couple_view.dashboard_title")}
         </h1>
 
@@ -61,62 +59,170 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* ### TEMPORARY SOLUTION, TO CHANGE TO A TABLE ### */}
         {!loading && !error && (
           <div>
-            <p className="mb-4">
-              {getTranslation("couple_view.rsvp_count")}: {rsvps.length}
-            </p>
-            {/* ADD TOTAL PEOPLE, INCLUDING PLUS ONES */}
-            {/* ADD TOTAL VEGGIES/REGULAR MENUS, INCLUDING PLUS ONES */}
+            {/* Stats for nerds */}
+            <div className="mb-6 gap-4 grid grid-cols-1 min-[600px]:grid-cols-2 min-[1200px]:grid-cols-4">
+              {/* Total RSVPs card */}
+              <div className="bg-fuchsia-50 p-4 rounded-xl">
+                <h3 className="font-semibold">
+                  {getTranslation("couple_view.rsvp_count")}
+                </h3>
+                <p className="text-3xl font-bold">{rsvps.length}</p>
+              </div>
+              {/* Total Guests card */}
+              <div className="bg-amber-50 p-4 rounded-xl">
+                <h3 className="font-semibold">
+                  {getTranslation("couple_view.total_guests")}
+                </h3>
+                <p className="text-3xl font-bold">
+                  {rsvps.reduce((total, rsvp) => {
+                    if (rsvp.attendance === "yes") {
+                      return total + 1 + rsvp.plusOnes.length;
+                    }
+                    return total;
+                  }, 0)}
+                </p>
+              </div>
+              {/* Total Regular Meals card */}
+              <div className="bg-blue-50 p-4 rounded-xl">
+                <h3 className="font-semibold">
+                  {getTranslation("couple_view.total_regular_meals")}
+                </h3>
+                <p className="text-3xl font-bold">
+                  {rsvps.reduce((total, rsvp) => {
+                    const mainReg = rsvp.menu === "regular" ? 1 : 0;
+                    const plusReg = rsvp.plusOnes.filter(
+                      (p) => p.menu === "regular"
+                    ).length;
+                    return total + mainReg + plusReg;
+                  }, 0)}
+                </p>
+              </div>
+              {/* Total Vegetarian Meals card */}
+              <div className="bg-green-50 p-4 rounded-xl">
+                <h3 className="font-semibold">
+                  {getTranslation("couple_view.total_vegetarian_meals")}
+                </h3>
+                <p className="text-3xl font-bold">
+                  {rsvps.reduce((total, rsvp) => {
+                    const mainVeg = rsvp.menu === "vegetarian" ? 1 : 0;
+                    const plusVeg = rsvp.plusOnes.filter(
+                      (p) => p.menu === "vegetarian"
+                    ).length;
+                    return total + mainVeg + plusVeg;
+                  }, 0)}
+                </p>
+              </div>
+            </div>
+            {/* END Stats for nerds */}
+
             {rsvps.length === 0 ? (
               <p>{getTranslation("couple_view.no_rsvps")}</p>
             ) : (
-              <div className="space-y-2">
-                {rsvps.map((rsvp) => (
-                  <div
-                    key={rsvp.id}
-                    className="border p-4 rounded"
-                  >
-                    <div>
-                      <h1>
-                        {getTranslation("general.first_name")}:{" "}
-                        {rsvp.firstName.slice(0, 1).toUpperCase() +
-                          rsvp.firstName.slice(1)}
-                      </h1>
-                      <h1>
-                        {getTranslation("general.last_name")}:{" "}
-                        {rsvp.lastName.slice(0, 1).toUpperCase() +
-                          rsvp.lastName.slice(1)}
-                      </h1>
-                    </div>
-                    <p>
-                      {getTranslation("general.email")}: {rsvp.email}
-                    </p>
-                    <p>
-                      {getTranslation("guest_view.rsvp_menu_label")}:{" "}
-                      {rsvp.menu.slice(0, 1).toUpperCase()}
-                      {rsvp.menu.slice(1)}
-                    </p>
-                    <p>{getTranslation("couple_view.plus_one_column")}: </p>
-                    <ul className="list-disc pl-5">
-                      {rsvp.plusOnes.map((plusOne, index) => (
-                        <li key={index}>
-                          {plusOne.firstName} {plusOne.lastName} {plusOne.menu}
-                        </li>
-                      ))}
-                    </ul>
-                    <p>
-                      {getTranslation("couple_view.attending_column")}:{" "}
-                      {rsvp.attendance}
-                    </p>
-                  </div>
-                ))}
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-neutral-50  text-nowrap">
+                  <thead>
+                    <tr className="bg-neutral-50">
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("general.first_name")}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("general.last_name")}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("general.email")}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("couple_view.attending_column")}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("guest_view.rsvp_menu_label")}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation("couple_view.plus_one_column")}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rsvps.map((rsvp, index) => (
+                      <tr
+                        key={rsvp.id}
+                        className={
+                          index % 2 === 0 ? "bg-white" : "bg-neutral-50"
+                        }
+                      >
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.firstName.charAt(0).toUpperCase() +
+                            rsvp.firstName.slice(1)}
+                        </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.lastName.charAt(0).toUpperCase() +
+                            rsvp.lastName.slice(1)}
+                        </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.email}
+                        </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              rsvp.attendance === "yes"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {rsvp.attendance === "yes" ? "✓ Yes" : "✗ No"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.menu && (
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                rsvp.menu === "vegetarian"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-blue-100 text-blue-800"
+                              }`}
+                            >
+                              {rsvp.menu.charAt(0).toUpperCase() +
+                                rsvp.menu.slice(1)}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.plusOnes.length > 0 ? (
+                            <div className="space-y-1">
+                              {rsvp.plusOnes.map((plusOne, idx) => (
+                                <div
+                                  key={idx}
+                                  className="text-sm"
+                                >
+                                  <span className="font-medium">
+                                    {plusOne.firstName} {plusOne.lastName}
+                                  </span>
+                                  <span
+                                    className={`ml-2 px-1 py-0.5 rounded text-xs ${
+                                      plusOne.menu === "vegetarian"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-blue-100 text-blue-800"
+                                    }`}
+                                  >
+                                    {plusOne.menu}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-sm">None</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
         )}
-        {/* END OF TEMPORARY SOLUTION */}
       </div>
     </>
   );
