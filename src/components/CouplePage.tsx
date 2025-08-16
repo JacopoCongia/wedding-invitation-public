@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./Header";
 import { useLanguage } from "../hooks/useLanguage";
 import { fetchRSVPs } from "../utils/firestore";
+import { firstLetterUppercase } from "../utils/firstLetterUppercase";
 
 import { type RSVPDocument } from "../utils/firestore";
 
@@ -152,17 +153,19 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                           index % 2 === 0 ? "bg-white" : "bg-neutral-50"
                         }
                       >
+                        {/* Name */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.firstName.charAt(0).toUpperCase() +
-                            rsvp.firstName.slice(1)}
+                          {firstLetterUppercase(rsvp.firstName)}
                         </td>
+                        {/* Last Name */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.lastName.charAt(0).toUpperCase() +
-                            rsvp.lastName.slice(1)}
+                          {firstLetterUppercase(rsvp.lastName)}
                         </td>
+                        {/* Email */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           {rsvp.email}
                         </td>
+                        {/* Attendance */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -174,6 +177,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                             {rsvp.attendance === "yes" ? "✓ Yes" : "✗ No"}
                           </span>
                         </td>
+                        {/* Menu */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           {rsvp.menu && (
                             <span
@@ -183,11 +187,11 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                   : "bg-blue-100 text-blue-800"
                               }`}
                             >
-                              {rsvp.menu.charAt(0).toUpperCase() +
-                                rsvp.menu.slice(1)}
+                              {firstLetterUppercase(rsvp.menu)}
                             </span>
                           )}
                         </td>
+                        {/* Plus Ones */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           {rsvp.plusOnes.length > 0 ? (
                             <div className="space-y-1">
@@ -196,9 +200,12 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                   key={idx}
                                   className="text-sm"
                                 >
+                                  {/* Plus One Name and Last Name */}
                                   <span className="font-medium">
-                                    {plusOne.firstName} {plusOne.lastName}
+                                    {firstLetterUppercase(plusOne.firstName)}{" "}
+                                    {firstLetterUppercase(plusOne.lastName)}
                                   </span>
+                                  {/* Plus One Menu */}
                                   <span
                                     className={`ml-2 px-1 py-0.5 rounded text-xs ${
                                       plusOne.menu === "vegetarian"
@@ -206,7 +213,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                         : "bg-blue-100 text-blue-800"
                                     }`}
                                   >
-                                    {plusOne.menu}
+                                    {firstLetterUppercase(plusOne.menu)}
                                   </span>
                                 </div>
                               ))}

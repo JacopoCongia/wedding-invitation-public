@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import { useLanguage } from "../hooks/useLanguage";
 import { useMenu } from "../hooks/useMenu";
 import { getNavigationLinks } from "../utils/getNavigationLinks";
@@ -35,7 +34,7 @@ function Header({
   } as const;
 
   // Set of sections that should have a dark header
-  const darkSections = new Set(["venue", "menu", "gifts"]);
+  const darkSections = new Set(["where_and_when", "gift"]);
 
   // Function to get the current header classes based on the section
   const getHeaderClasses = () => {
@@ -58,15 +57,7 @@ function Header({
   // Effect to handle scroll events and update the current section
   useEffect(() => {
     const handleScroll = () => {
-      const sections = [
-        "about-us",
-        "venue",
-        "accommodation",
-        "menu",
-        "dress-code",
-        "gifts",
-        "rsvp",
-      ];
+      const sections = ["us", "where_and_when", "menu", "gift", "rsvp"];
 
       // Check each section to see if it's currently in view
       for (const sectionId of sections) {
@@ -223,7 +214,7 @@ function Header({
           </button>
         )}
         {
-          <div className="hidden flex-1 gap-5 justify-center min-[850px]:flex lg:gap-9">
+          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-9">
             {navigationContent}
           </div>
         }

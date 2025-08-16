@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { LanguageContext } from "../contexts/language-context";
 
+// Define the type for the language context
 interface LanguageContextType {
   language: string;
   setLanguage: (lang: string) => void;

@@ -37,37 +37,26 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
           setIsFading={setIsFading}
         />
         <Section
-          title={getTranslation("guest_view.about_us_title")}
+          title={getTranslation("guest_view.us_title")}
           content="content"
-          id={"about-us"}
+          id={"us"}
           dark
         />
         <Section
-          title={getTranslation("guest_view.location_title")}
+          title={getTranslation("guest_view.where_and_when_title")}
           content="content"
-          id={"venue"}
+          id={"where_and_when"}
         />
         <Section
-          title={getTranslation("guest_view.accommodation_title")}
-          content="content"
-          id={"accommodation"}
-          dark
-        />
-        <Section
-          title={getTranslation("guest_view.food_title")}
+          title={getTranslation("guest_view.menu_title")}
           content="content"
           id={"menu"}
-        />
-        <Section
-          title={getTranslation("guest_view.dress_code_title")}
-          content="content"
-          id={"dress-code"}
           dark
         />
         <Section
-          title={getTranslation("guest_view.gifts_title")}
+          title={getTranslation("guest_view.gift_title")}
           content="content"
-          id={"gifts"}
+          id={"gift"}
         />
         <Section
           title={getTranslation("guest_view.rsvp_title")}

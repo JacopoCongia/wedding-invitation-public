@@ -15,24 +15,20 @@
     "incorrect_password": "Password errata. Riprova."
   },
   "header": {
-    "about_us": "Chi Siamo",
-    "location": "Dove Siamo",
-    "accommodation": "Alloggio",
-    "food": "Menù",
-    "dress_code": "Dress Code",
-    "gifts": "Regali",
+    "us": "Noi",
+    "where_and_when": "Dove e Quando",
+    "menu": "Menù",
+    "gift": "Regalo di Nozze",
     "rsvp": "Conferma Presenza"
   },
   "sidebar": {
     "logout": "Torna al login"
   },
   "guest_view": {
-    "about_us_title": "Chi Siamo",
-    "location_title": "Dove Siamo",
-    "accommodation_title": "Alloggio",
-    "food_title": "Cibo e Bevande",
-    "dress_code_title": "Dress Code",
-    "gifts_title": "Lista Regali",
+    "us_title": "Noi",
+    "where_and_when_title": "Dove e Quando",
+    "menu_title": "Cibo e Bevande",
+    "gift_title": "Regalo di Nozze",
     "rsvp_title": "Conferma Presenza",
     "rsvp_name_placeholder": "Inserisci il tuo nome",
     "rsvp_lastname_placeholder": "Inserisci il tuo cognome",
