@@ -38,6 +38,8 @@
     "rsvp_menu_label": "Menu Preference",
     "rsvp_regular_label": "Regular",
     "rsvp_vegetarian_label": "Vegetarian",
+    "rsvp_dietary_restrictions_label": "Dietary Restrictions",
+    "rsvp_dietary_restrictions_placeholder": "Allergies or special requests",
     "rsvp_attending_label": "Attending?",
     "rsvp_selection": "Select...",
     "rsvp_selection_none": "None",

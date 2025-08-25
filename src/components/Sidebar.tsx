@@ -82,7 +82,7 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
     <>
       <div
         ref={sidebarRef}
-        className={`flex flex-col items-center pt-15 fixed top-[56px] left-0 z-40 h-screen bg-neutral-50 text-neutral-700 gap-8 w-full min-[500px]:w-[300px] min-[850px]:hidden transition-transform duration-300 ease-in-out ${
+        className={`flex flex-col select-none items-center pt-15 fixed top-[56px] left-0 z-40 h-screen bg-neutral-50 text-neutral-700 gap-8 w-full min-[500px]:w-[300px] min-[850px]:hidden transition-transform duration-300 ease-in-out ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

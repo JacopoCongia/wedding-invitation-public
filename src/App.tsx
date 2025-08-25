@@ -13,10 +13,16 @@ function App() {
   // Transition state
   const [isFading, setIsFading] = useState(false);
 
-  // Temporary solution, to be replaced with env variables!!!
-  const GUEST_PASSWORD = "guestsecret";
-  const COUPLE_PASSWORD = "couplesecret";
+  // ### REMEMBER TO ADD THESE TO NETLIFY ###
+  const GUEST_PASSWORD = import.meta.env.VITE_GUEST_PASSWORD;
+  const COUPLE_PASSWORD = import.meta.env.VITE_COUPLE_PASSWORD;
 
+  // Check for missing environment variables
+  if (!GUEST_PASSWORD || !COUPLE_PASSWORD) {
+    console.error(
+      "Missing environment variables. Please check your .env file."
+    );
+  }
   // Handle the login logic, depending on the password input
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

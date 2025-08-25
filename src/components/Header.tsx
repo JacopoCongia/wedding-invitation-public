@@ -115,7 +115,7 @@ function Header({
     <>
       {/* Language selection UI */}
       <header
-        className={`flex text-[0.9rem] justify-center items-center sticky top-0 z-50 p-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
+        className={`flex text-[0.9rem] select-none justify-center items-center sticky top-0 z-50 p-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
       >
         {/* Go back button */}
         <button

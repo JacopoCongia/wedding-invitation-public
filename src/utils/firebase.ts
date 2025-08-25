@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAtgHS376Z_lC0SMWz_RySgAXiC9A7F8cw",
-  authDomain: "wedding-invite-rsvp.firebaseapp.com",
-  projectId: "wedding-invite-rsvp",
-  storageBucket: "wedding-invite-rsvp.firebasestorage.app",
-  messagingSenderId: "842447020605",
-  appId: "1:842447020605:web:902dabbd229caac98a8054",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

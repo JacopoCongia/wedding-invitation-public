@@ -4,6 +4,7 @@ export interface FormState {
   email: string;
   attendance: string;
   menu: string;
+  dietaryRestrictions: string;
   plusOnes: PlusOne[];
 }
 
@@ -11,4 +12,5 @@ interface PlusOne {
   firstName: string;
   lastName: string;
   menu: string;
+  dietaryRestrictions: string;
 }

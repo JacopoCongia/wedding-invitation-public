@@ -37,6 +37,8 @@
     "rsvp_menu_label": "Preferenza Menù",
     "rsvp_regular_label": "Normale",
     "rsvp_vegetarian_label": "Vegetariano",
+    "rsvp_dietary_restrictions_label": "Allergie o Intolleranze Alimentari",
+    "rsvp_dietary_restrictions_placeholder": "Allergie o richieste speciali",
     "rsvp_attending_label": "Parteciperai?",
     "rsvp_selection": "Seleziona...",
     "rsvp_selection_none": "Nessuno",

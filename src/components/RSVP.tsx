@@ -12,6 +12,7 @@ function RSVP() {
     email: "",
     attendance: "",
     menu: "",
+    dietaryRestrictions: "",
     plusOnes: [],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -55,6 +56,7 @@ function RSVP() {
             firstName: "",
             lastName: "",
             menu: "",
+            dietaryRestrictions: "",
           }))
         );
       } else {
@@ -143,6 +145,7 @@ function RSVP() {
           email: "",
           attendance: "",
           menu: "",
+          dietaryRestrictions: "",
           plusOnes: [],
         });
         // Set submitted state to true to show success message
@@ -367,7 +370,22 @@ function RSVP() {
               </div>
               {/* END Menu */}
             </div>
-
+            <div className="flex flex-col items-center">
+              <label htmlFor="dietaryRestrictions">
+                {getTranslation("guest_view.rsvp_dietary_restrictions_label")}
+              </label>
+              <input
+                type="text"
+                id="dietaryRestrictions"
+                name="dietaryRestrictions"
+                placeholder={getTranslation(
+                  "guest_view.rsvp_dietary_restrictions_placeholder"
+                )}
+                className="bg-neutral-50 p-2 w-full text-neutral-700 mt-1 mb-4 rounded text-center"
+                value={form.dietaryRestrictions}
+                onChange={handleChange}
+              />
+            </div>
             {/* Plus Ones */}
             {/* Render plus ones based on the number selected */}
             <label
@@ -533,6 +551,27 @@ function RSVP() {
                     />
                   </div>
                 </div>
+                {/* Dietary Restrictions PlusOnes */}
+                <input
+                  type="text"
+                  id={`menu-dietary-restrictions-${idx}`}
+                  name={`menu-dietary-restrictions-${idx}`}
+                  value={plusOne.dietaryRestrictions}
+                  placeholder={getTranslation(
+                    "guest_view.rsvp_dietary_restrictions_placeholder"
+                  )}
+                  className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded`}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setForm((prev) => ({
+                      ...prev,
+                      plusOnes: prev.plusOnes.map((po, i) =>
+                        i === idx ? { ...po, dietaryRestrictions: value } : po
+                      ),
+                    }));
+                  }}
+                />
+                {/* End of Dietary Restrictions PlusOnes */}
               </div>
             ))}
             {/* End of plus ones selection */}

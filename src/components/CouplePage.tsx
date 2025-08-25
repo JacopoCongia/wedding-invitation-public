@@ -27,7 +27,17 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
       try {
         const fetchedRSVPs = await fetchRSVPs();
         setLoading(true);
-        setRsvps(fetchedRSVPs);
+        // Sort by createdAt descending (newest first)
+        const sortedRSVPs = [...fetchedRSVPs].sort((a, b) => {
+          const aTime = a.submittedAt?.toMillis
+            ? a.submittedAt.toMillis()
+            : a.submittedAt.toMillis();
+          const bTime = b.submittedAt?.toMillis
+            ? b.submittedAt.toMillis()
+            : b.submittedAt.toMillis();
+          return bTime - aTime;
+        });
+        setRsvps(sortedRSVPs);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch RSVPs:", err);
@@ -141,6 +151,11 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         {getTranslation("guest_view.rsvp_menu_label")}
                       </th>
                       <th className="px-4 py-3 text-left font-semibold">
+                        {getTranslation(
+                          "guest_view.rsvp_dietary_restrictions_label"
+                        )}
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold">
                         {getTranslation("couple_view.plus_one_column")}
                       </th>
                     </tr>
@@ -191,6 +206,13 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                             </span>
                           )}
                         </td>
+                        <td className="px-4 py-3 border-b border-neutral-100">
+                          {rsvp.menu && (
+                            <span className="text-[0.9rem] font-regular">
+                              {rsvp.dietaryRestrictions}
+                            </span>
+                          )}
+                        </td>
                         {/* Plus Ones */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           {rsvp.plusOnes.length > 0 ? (
@@ -214,6 +236,14 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                     }`}
                                   >
                                     {firstLetterUppercase(plusOne.menu)}
+                                  </span>
+                                  {/* Plus One Dietary Restrictions */}
+                                  <span>
+                                    {plusOne.dietaryRestrictions && (
+                                      <span className="ml-2 text-[0.8rem] font-regular">
+                                        ({plusOne.dietaryRestrictions})
+                                      </span>
+                                    )}
                                   </span>
                                 </div>
                               ))}
