@@ -207,9 +207,9 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                           )}
                         </td>
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.menu && (
+                          {rsvp.menu && rsvp.dietaryRestrictions && (
                             <span className="text-[0.9rem] font-regular">
-                              {rsvp.dietaryRestrictions}
+                              {firstLetterUppercase(rsvp.dietaryRestrictions)}
                             </span>
                           )}
                         </td>
@@ -241,7 +241,11 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                   <span>
                                     {plusOne.dietaryRestrictions && (
                                       <span className="ml-2 text-[0.8rem] font-regular">
-                                        ({plusOne.dietaryRestrictions})
+                                        (
+                                        {firstLetterUppercase(
+                                          plusOne.dietaryRestrictions
+                                        )}
+                                        )
                                       </span>
                                     )}
                                   </span>
