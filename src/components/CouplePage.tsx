@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import Header from "./Header";
 import { useLanguage } from "../hooks/useLanguage";
-import { fetchRSVPs } from "../utils/firestore";
+import { fetchGuests } from "../utils/supabaseClient";
 import { firstLetterUppercase } from "../utils/firstLetterUppercase";
 
-import { type RSVPDocument } from "../utils/firestore";
-
+import { type Database } from "../types/supabase";
+type PlusOneRow = Database["public"]["Tables"]["plus_ones"]["Row"];
+type GuestRowWithPlusOnes = Database["public"]["Tables"]["guests"]["Row"] & {
+  plus_ones: PlusOneRow[];
+};
 // Define the types for the CouplePage component
 interface CouplePageProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
@@ -15,29 +18,29 @@ interface CouplePageProps {
 function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
   const { getTranslation } = useLanguage();
   const [fadeIn, setFadeIn] = useState(false);
-  const [rsvps, setRsvps] = useState<RSVPDocument[]>([]);
+  const [rsvps, setRsvps] = useState<GuestRowWithPlusOnes[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setTimeout(() => setFadeIn(true), 10); // Delay to allow fade-in effect
 
-    // Function to fetch RSVPs from Firestore
-    const loadRSVPs = async () => {
+    // Function to fetch RSVPs from Supabase
+    const loadGuests = async () => {
       try {
-        const fetchedRSVPs = await fetchRSVPs();
+        const fetchedGuests = await fetchGuests();
         setLoading(true);
-        // Sort by createdAt descending (newest first)
-        const sortedRSVPs = [...fetchedRSVPs].sort((a, b) => {
-          const aTime = a.submittedAt?.toMillis
-            ? a.submittedAt.toMillis()
-            : a.submittedAt.toMillis();
-          const bTime = b.submittedAt?.toMillis
-            ? b.submittedAt.toMillis()
-            : b.submittedAt.toMillis();
-          return bTime - aTime;
-        });
-        setRsvps(sortedRSVPs);
+        // // Sort by createdAt descending (newest first)
+        // const sortedRSVPs = [...fetchedRSVPs].sort((a, b) => {
+        //   const aTime = a.submittedAt?.toMillis
+        //     ? a.submittedAt.toMillis()
+        //     : a.submittedAt.toMillis();
+        //   const bTime = b.submittedAt?.toMillis
+        //     ? b.submittedAt.toMillis()
+        //     : b.submittedAt.toMillis();
+        //   return bTime - aTime;
+        // });
+        setRsvps(fetchedGuests);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch RSVPs:", err);
@@ -47,7 +50,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
       }
     };
 
-    loadRSVPs();
+    loadGuests();
   }, []);
 
   return (
@@ -89,7 +92,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 <p className="text-3xl font-bold">
                   {rsvps.reduce((total, rsvp) => {
                     if (rsvp.attendance === "yes") {
-                      return total + 1 + rsvp.plusOnes.length;
+                      return total + 1 + rsvp.plus_ones.length;
                     }
                     return total;
                   }, 0)}
@@ -102,9 +105,9 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 </h3>
                 <p className="text-3xl font-bold">
                   {rsvps.reduce((total, rsvp) => {
-                    const mainReg = rsvp.menu === "regular" ? 1 : 0;
-                    const plusReg = rsvp.plusOnes.filter(
-                      (p) => p.menu === "regular"
+                    const mainReg = rsvp.menu_choice === "regular" ? 1 : 0;
+                    const plusReg = rsvp.plus_ones.filter(
+                      (p) => p.menu_choice === "regular"
                     ).length;
                     return total + mainReg + plusReg;
                   }, 0)}
@@ -117,9 +120,10 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 </h3>
                 <p className="text-3xl font-bold">
                   {rsvps.reduce((total, rsvp) => {
-                    const mainVeg = rsvp.menu === "vegetarian" ? 1 : 0;
-                    const plusVeg = rsvp.plusOnes.filter(
-                      (p) => p.menu === "vegetarian"
+                    const mainVeg =
+                      rsvp.menu_choice?.toLowerCase() === "vegetarian" ? 1 : 0;
+                    const plusVeg = rsvp.plus_ones.filter(
+                      (p) => p.menu_choice?.toLowerCase() === "vegetarian"
                     ).length;
                     return total + mainVeg + plusVeg;
                   }, 0)}
@@ -170,11 +174,11 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                       >
                         {/* Name */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {firstLetterUppercase(rsvp.firstName)}
+                          {firstLetterUppercase(rsvp.first_name ?? "")}
                         </td>
                         {/* Last Name */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {firstLetterUppercase(rsvp.lastName)}
+                          {firstLetterUppercase(rsvp.last_name ?? "")}
                         </td>
                         {/* Email */}
                         <td className="px-4 py-3 border-b border-neutral-100">
@@ -194,56 +198,63 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         </td>
                         {/* Menu */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.menu && (
+                          {rsvp.menu_choice && (
                             <span
                               className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                rsvp.menu === "vegetarian"
+                                rsvp.menu_choice.toLowerCase() === "vegetarian"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-blue-100 text-blue-800"
                               }`}
                             >
-                              {firstLetterUppercase(rsvp.menu)}
+                              {firstLetterUppercase(rsvp.menu_choice)}
                             </span>
                           )}
                         </td>
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.menu && rsvp.dietaryRestrictions && (
+                          {rsvp.menu_choice && rsvp.dietary_restrictions && (
                             <span className="text-[0.9rem] font-regular">
-                              {firstLetterUppercase(rsvp.dietaryRestrictions)}
+                              {firstLetterUppercase(rsvp.dietary_restrictions)}
                             </span>
                           )}
                         </td>
                         {/* Plus Ones */}
                         <td className="px-4 py-3 border-b border-neutral-100">
-                          {rsvp.plusOnes.length > 0 ? (
+                          {rsvp.plus_ones.length > 0 ? (
                             <div className="space-y-1">
-                              {rsvp.plusOnes.map((plusOne, idx) => (
+                              {rsvp.plus_ones.map((plusOne, idx) => (
                                 <div
                                   key={idx}
                                   className="text-sm"
                                 >
                                   {/* Plus One Name and Last Name */}
                                   <span className="font-medium">
-                                    {firstLetterUppercase(plusOne.firstName)}{" "}
-                                    {firstLetterUppercase(plusOne.lastName)}
+                                    {firstLetterUppercase(
+                                      plusOne.first_name ?? ""
+                                    )}{" "}
+                                    {firstLetterUppercase(
+                                      plusOne.last_name ?? ""
+                                    )}
                                   </span>
                                   {/* Plus One Menu */}
                                   <span
-                                    className={`ml-2 px-1 py-0.5 rounded text-xs ${
-                                      plusOne.menu === "vegetarian"
+                                    className={`ml-2 px-2 py-1 rounded-full text-xs ${
+                                      plusOne.menu_choice?.toLowerCase() ===
+                                      "vegetarian"
                                         ? "bg-green-100 text-green-800"
                                         : "bg-blue-100 text-blue-800"
                                     }`}
                                   >
-                                    {firstLetterUppercase(plusOne.menu)}
+                                    {firstLetterUppercase(
+                                      plusOne.menu_choice ?? ""
+                                    )}
                                   </span>
                                   {/* Plus One Dietary Restrictions */}
                                   <span>
-                                    {plusOne.dietaryRestrictions && (
+                                    {plusOne.dietary_restrictions && (
                                       <span className="ml-2 text-[0.8rem] font-regular">
                                         (
                                         {firstLetterUppercase(
-                                          plusOne.dietaryRestrictions
+                                          plusOne.dietary_restrictions
                                         )}
                                         )
                                       </span>

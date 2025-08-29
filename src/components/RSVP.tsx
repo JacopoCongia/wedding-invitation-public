@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../hooks/useLanguage";
+import { addGuest } from "../utils/supabaseClient";
+
 import { type FormState } from "../types/rsvp-form";
-import { submitRSVP } from "../utils/firestore";
 
 function RSVP() {
   const { getTranslation } = useLanguage();
@@ -135,7 +136,7 @@ function RSVP() {
         // FORM SUBMISSION LOGIC HERE -- FIREBASE ETC
         console.log("Form is valid, submitting...", form);
         // alert("RSVP submitted successfully!");
-        await Promise.resolve(submitRSVP(form)).catch((error) => {
+        await Promise.resolve(addGuest(form)).catch((error) => {
           throw error;
         });
         // Reset the form after successful submission
