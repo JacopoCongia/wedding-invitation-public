@@ -5,5 +5,5 @@
   <li>React.js</li>
   <li>TypeScript</li>
   <li>TailwindCSS</li>
-  <li>Firebase Firestore</li>
+  <li>Supabase</li>
 </ul>
