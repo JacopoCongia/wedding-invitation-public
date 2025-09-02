@@ -1,23 +1,50 @@
 interface SectionProps {
-  title: string;
-  content: string;
   id: string;
+  title: string;
+  content: string[];
+  picture?: { src: string; alt: string; credit: string };
   children?: React.ReactNode;
   dark?: boolean; // Optional prop to determine if the section should have a dark background
 }
 
-function Section({ title, content, id, children, dark }: SectionProps) {
+function Section({
+  id,
+  title,
+  content,
+  picture,
+  children,
+  dark,
+}: SectionProps) {
   return (
     <section
-      className={`w-full min-h-screen flex flex-col items-center justify-center py-15 scroll-mt-14 ${
+      className={`w-full min-h-screen flex flex-col items-center justify-center py-15 scroll-mt-[59px] ${
         dark
           ? "bg-neutral-700 text-neutral-50"
           : "bg-neutral-50 text-neutral-700"
       }`}
       id={id}
     >
-      <h2 className="text-4xl px-5 font-bold mb-4 text-center">{title}</h2>
-      <p className="text-lg text-center">{content}</p>
+      <h2 className="bonheur-font text-[4rem] px-5 mb-4">{title}</h2>
+      <div className="flex flex-col gap-6 items-center mb-10 min-[700px]:w-[600px]">
+        {picture && (
+          <div className="flex flex-col items-center">
+            <img
+              src={picture.src}
+              alt={picture.alt}
+              className="w-full border-[6px] min-[700px]:border-neutral-50 min-[700px]:rounded-xl"
+            />
+            <p className="self-end text-[0.7rem]">{picture.credit}</p>
+          </div>
+        )}
+        {content.map((paragraph, index) => (
+          <p
+            key={index}
+            className={`text-lg text-justify`}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
       {children}
     </section>
   );

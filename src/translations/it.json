@@ -50,11 +50,18 @@
     "rsvp_validation_email_invalid": "Inserisci un indirizzo email valido.",
     "rsvp_validation_attendance": "Seleziona se parteciperai.",
     "rsvp_validation_menu": "Seleziona una preferenza per il menù.",
-
     "submit_rsvp": "Invia Conferma",
     "rsvp_success": "Grazie per la tua conferma!",
     "rsvp_error": "Si è verificato un errore nell'invio della conferma. Riprova.",
-    "rsvp_message_success": "La tua conferma è stata inviata con successo! \nDovresti ricevere un'email di conferma a breve."
+    "rsvp_message_success": "La tua conferma è stata inviata con successo! \nDovresti ricevere un'email di conferma a breve.",
+    "sections": {
+      "us_1": "Ciao! Siamo Luca & Giulia. La nostra storia è iniziata cinque anni fa con un caffè che si è trasformato in innumerevoli avventure. Dalle corse notturne per la pizza ai viaggi spontanei nel fine settimana, siamo stati partner nelle risate, nel supporto e in tutte le piccole cose che rendono la vita dolce.",
+      "us_2": "Ora, siamo entusiasti di fare il prossimo grande passo: celebrare il nostro amore con tutti voi!",
+      "us_3": "Non vediamo l'ora di condividere questo giorno speciale circondati dalle persone che hanno fatto parte del nostro viaggio.",
+      "where_and_when": "Ci sposeremo il 15 giugno 2024, nella bellissima campagna. La cerimonia avrà luogo alle 16:00, seguita da un ricevimento pieno di amore, risate e balli!",
+      "menu": "Abbiamo curato un menù che riflette i nostri sapori preferiti. Dagli antipasti ai dessert, non vediamo l'ora che tu possa indulgere in questo viaggio culinario con noi!",
+      "gift_registry": "La tua presenza al nostro matrimonio è il regalo più grande di tutti! Tuttavia, se desideri onorarci con un regalo, abbiamo creato un registro per aiutarti."
+    }
   },
   "couple_view": {
     "dashboard_title": "Pagina degli Sposi",
