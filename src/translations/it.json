@@ -9,9 +9,9 @@
   },
   "login": {
     "welcome_title": "Benvenuti al Nostro Matrimonio!",
-    "password_prompt": "Inserisci la password che ti abbiamo fornito per procedere.",
-    "password_placeholder": "Inserisci password",
-    "enter_button": "Entra",
+    "password_prompt": "Seleziona un'opzione per procedere.",
+    "guest_button": "Entra come Ospite",
+    "couple_button": "Entra come Coppia",
     "incorrect_password": "Password errata. Riprova."
   },
   "header": {
@@ -48,6 +48,7 @@
     "rsvp_validation_lastname": "Il cognome è obbligatorio.",
     "rsvp_validation_email": "È richiesta un'email valida.",
     "rsvp_validation_email_invalid": "Inserisci un indirizzo email valido.",
+    "rsvp_validation_email_used": "Questa email è già stata utilizzata per confermare la presenza, per favore scegline un'altra.",
     "rsvp_validation_attendance": "Seleziona se parteciperai.",
     "rsvp_validation_menu": "Seleziona una preferenza per il menù.",
     "submit_rsvp": "Invia Conferma",

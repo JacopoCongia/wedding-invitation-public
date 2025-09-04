@@ -9,9 +9,9 @@
   },
   "login": {
     "welcome_title": "Welcome to Our Wedding!",
-    "password_prompt": "Please enter the password we provided to proceed.",
-    "password_placeholder": "Enter password",
-    "enter_button": "Enter",
+    "password_prompt": "Please select an option to proceed.",
+    "guest_button": "Guest View",
+    "couple_button": "Couple View",
     "incorrect_password": "Incorrect password. Please try again."
   },
   "header": {
@@ -47,6 +47,7 @@
     "rsvp_validation_lastname": "Last name is required.",
     "rsvp_validation_email": "An email address is required.",
     "rsvp_validation_email_invalid": "Please enter a valid email address.",
+    "rsvp_validation_email_used": "This email has already been used to RSVP, please choose another one.",
     "rsvp_validation_attendance": "Please select if you will attend.",
     "rsvp_validation_menu": "Please select a menu preference.",
     "submit_rsvp": "Submit RSVP",

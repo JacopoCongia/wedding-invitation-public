@@ -7,7 +7,6 @@ export async function fetchGuests() {
     plus_ones(*)
   `);
   if (error) throw error;
-  console.log(data);
   return data;
 }
 
@@ -15,7 +14,7 @@ export async function addGuest(guestData: {
   firstName: string;
   lastName: string;
   email: string;
-  attendance: string;
+  attendance: boolean | null;
   menu: string;
   dietaryRestrictions: string;
   plusOnes?: {
@@ -38,7 +37,7 @@ export async function addGuest(guestData: {
     .select()
     .single();
   if (guestError) {
-    throw guestError;
+    return { data: null, error: guestError };
   }
 
   if (guestData.plusOnes && guestData.plusOnes.length > 0) {
@@ -58,4 +57,6 @@ export async function addGuest(guestData: {
       console.error(plusOnesError);
     }
   }
+
+  return { data: guest, error: null };
 }

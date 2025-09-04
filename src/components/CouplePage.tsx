@@ -87,7 +87,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 </h3>
                 <p className="text-3xl font-bold">
                   {rsvps.reduce((total, rsvp) => {
-                    if (rsvp.attendance === "yes") {
+                    if (rsvp.attendance) {
                       return total + 1 + rsvp.plus_ones.length;
                     }
                     return total;
@@ -184,12 +184,12 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         <td className="px-4 py-3 border-b border-neutral-100">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              rsvp.attendance === "yes"
+                              rsvp.attendance
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
-                            {rsvp.attendance === "yes" ? "✓ Yes" : "✗ No"}
+                            {rsvp.attendance ? "✓ Yes" : "✗ No"}
                           </span>
                         </td>
                         {/* Menu */}

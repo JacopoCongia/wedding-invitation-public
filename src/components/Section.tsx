@@ -24,7 +24,9 @@ function Section({
       }`}
       id={id}
     >
-      <h2 className="bonheur-font text-[4rem] px-5 mb-4">{title}</h2>
+      <h2 className="great-vibes-font tracking-wide text-[3rem] px-5 mb-4 min-[600px]:text-[4rem]">
+        {title}
+      </h2>
       <div className="flex flex-col gap-6 items-center mb-10 min-[700px]:w-[600px]">
         {picture && (
           <div className="flex flex-col items-center">
@@ -39,7 +41,7 @@ function Section({
         {content.map((paragraph, index) => (
           <p
             key={index}
-            className={`text-lg text-justify`}
+            className={`text-lg text-center px-[1.8em] min-[600px]:text-justify min-[600px]:px-0`}
           >
             {paragraph}
           </p>

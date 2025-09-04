@@ -11,7 +11,7 @@ function RSVP() {
     firstName: "",
     lastName: "",
     email: "",
-    attendance: "",
+    attendance: null,
     menu: "",
     dietaryRestrictions: "",
     plusOnes: [],
@@ -32,17 +32,27 @@ function RSVP() {
   // Handle changes for the main form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (value === "no") {
+
+    // Special handling for attendance to convert string to boolean
+    if (name === "attendance") {
       setForm((prev) => ({
         ...prev,
-        menu: "",
-        plusOnes: [],
+        [name]: value === "true" ? true : false,
+      }));
+      // Reset menu and plusOnes if attendance is "no"
+      if (value === "false") {
+        setForm((prev) => ({
+          ...prev,
+          menu: "",
+          plusOnes: [],
+        }));
+      }
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
       }));
     }
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
   // Handle changes for the plus ones
@@ -88,14 +98,14 @@ function RSVP() {
         "guest_view.rsvp_validation_email_invalid"
       );
     }
-    if (!form.attendance) {
+    if (form.attendance === null) {
       newErrors.attendance = getTranslation(
         "guest_view.rsvp_validation_attendance"
       );
     }
 
     // Validate conditional fields if attending
-    if (form.attendance === "yes") {
+    if (form.attendance) {
       if (!form.menu)
         newErrors.menu = getTranslation("guest_view.rsvp_validation_menu");
 
@@ -132,32 +142,39 @@ function RSVP() {
 
     if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
-      try {
-        // FORM SUBMISSION LOGIC HERE -- FIREBASE ETC
-        console.log("Form is valid, submitting...", form);
-        // alert("RSVP submitted successfully!");
-        await Promise.resolve(addGuest(form)).catch((error) => {
-          throw error;
-        });
-        // Reset the form after successful submission
-        setForm({
-          firstName: "",
-          lastName: "",
-          email: "",
-          attendance: "",
-          menu: "",
-          dietaryRestrictions: "",
-          plusOnes: [],
-        });
-        // Set submitted state to true to show success message
-        setIsSubmitted(true);
-        // ### IMPLEMENT CONFIRMATION EMAIL SERVICE ###
-      } catch (error) {
-        console.error("Submission failed:", error);
-        alert("There was an error submitting your RSVP. Please try again.");
-      } finally {
+
+      const { data, error } = await addGuest(form);
+      if (error) {
+        if (error.code === "23505") {
+          // Duplicate email error
+          setErrors({
+            email: getTranslation("guest_view.rsvp_validation_email_used"),
+          });
+        }
+        console.error("Submission failed:", error.code, error.message);
+        // alert("There was an error submitting your RSVP. Please try again.");
         setIsSubmitting(false);
+        return;
       }
+
+      console.log("Form submitted successfully:", data);
+
+      // Reset the form after successful submission
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        attendance: null,
+        menu: "",
+        dietaryRestrictions: "",
+        plusOnes: [],
+      });
+
+      // Set submitted state to true to show success message and hide the form
+      setIsSubmitted(true);
+      setIsSubmitting(false);
+
+      // ### IMPLEMENT CONFIRMATION EMAIL SERVICE ###
     } else {
       console.log("Validation Errors:", validationErrors);
     }
@@ -271,7 +288,7 @@ function RSVP() {
             <label
               htmlFor="attendance-yes"
               className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                form.attendance === "yes"
+                form.attendance === true
                   ? "bg-teal-500 text-neutral-50"
                   : "bg-neutral-50 text-neutral-700"
               } hover:bg-teal-500 hover:text-neutral-50 $`}
@@ -282,8 +299,8 @@ function RSVP() {
               type="radio"
               id="attendance-yes"
               name="attendance"
-              value="yes"
-              checked={form.attendance === "yes"}
+              value="true"
+              checked={form.attendance === true}
               onChange={handleChange}
               className="hidden"
             />
@@ -292,7 +309,7 @@ function RSVP() {
             <label
               htmlFor="attendance-no"
               className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
-                form.attendance === "no"
+                form.attendance === false
                   ? "bg-teal-500 text-neutral-50"
                   : "bg-neutral-50 text-neutral-700"
               } hover:bg-teal-500 hover:text-neutral-50`}
@@ -303,15 +320,15 @@ function RSVP() {
               type="radio"
               id="attendance-no"
               name="attendance"
-              value="no"
-              checked={form.attendance === "no"}
+              value="false"
+              checked={form.attendance === false}
               onChange={handleChange}
               className="hidden"
             />
           </div>
         </div>
         {/* END Attendance */}
-        {form.attendance === "yes" && (
+        {form.attendance && (
           <div>
             {/* Menu */}
             <label

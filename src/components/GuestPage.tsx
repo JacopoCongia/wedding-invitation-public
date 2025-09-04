@@ -54,18 +54,18 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
         />
         <Section
           title={getTranslation("guest_view.where_and_when_title")}
-          content={["Content"]}
+          content={[getTranslation("guest_view.sections.where_and_when")]}
           id={"where_and_when"}
         />
         <Section
           title={getTranslation("guest_view.menu_title")}
-          content={["Content"]}
+          content={[getTranslation("guest_view.sections.menu")]}
           id={"menu"}
           dark
         />
         <Section
           title={getTranslation("guest_view.gift_title")}
-          content={["Content"]}
+          content={[getTranslation("guest_view.sections.gift_registry")]}
           id={"gift"}
         />
         <Section

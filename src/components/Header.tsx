@@ -189,7 +189,7 @@ function Header({
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-neutral-700"
+                className={getIconClasses()}
               >
                 <line
                   x1="4"
@@ -214,12 +214,12 @@ function Header({
           </button>
         )}
         {
-          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-9">
+          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-12">
             {navigationContent}
           </div>
         }
         {/* Language selection UI */}
-        <div className="flex gap-3 ml-auto excluded-from-click">
+        <div className="flex gap-4 ml-auto excluded-from-click">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}
