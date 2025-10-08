@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLanguage } from "./hooks/useLanguage";
 import LoginPage from "./components/LoginPage";
 import GuestPage from "./components/GuestPage";
