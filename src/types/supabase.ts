@@ -41,7 +41,7 @@ export type Database = {
     Tables: {
       guests: {
         Row: {
-          attendance: string | null;
+          attendance: boolean | null;
           created_at: string;
           dietary_restrictions: string | null;
           email: string | null;
@@ -51,7 +51,7 @@ export type Database = {
           menu_choice: string | null;
         };
         Insert: {
-          attendance?: string | null;
+          attendance?: boolean;
           created_at?: string;
           dietary_restrictions?: string | null;
           email?: string | null;
@@ -61,7 +61,7 @@ export type Database = {
           menu_choice?: string | null;
         };
         Update: {
-          attendance?: string | null;
+          attendance?: boolean;
           created_at?: string;
           dietary_restrictions?: string | null;
           email?: string | null;

@@ -9,13 +9,13 @@
   },
   "login": {
     "welcome_title": "Welcome to Our Wedding!",
-    "password_prompt": "Please enter the password we provided to proceed.",
-    "password_placeholder": "Enter password",
-    "enter_button": "Enter",
+    "password_prompt": "Please select an option to proceed.",
+    "guest_button": "Guest View",
+    "couple_button": "Couple View",
     "incorrect_password": "Incorrect password. Please try again."
   },
   "header": {
-    "us": "Us",
+    "us": "About Us",
     "where_and_when": "Where & When",
     "menu": "Menu",
     "gift": "Gift",
@@ -25,7 +25,7 @@
     "logout": "Back to login"
   },
   "guest_view": {
-    "us_title": "Us",
+    "us_title": "About Us",
     "where_and_when_title": "Where & When",
     "menu_title": "Food & Drinks",
     "gift_title": "Gift Registry",
@@ -47,13 +47,21 @@
     "rsvp_validation_lastname": "Last name is required.",
     "rsvp_validation_email": "An email address is required.",
     "rsvp_validation_email_invalid": "Please enter a valid email address.",
+    "rsvp_validation_email_used": "This email has already been used to RSVP, please choose another one.",
     "rsvp_validation_attendance": "Please select if you will attend.",
     "rsvp_validation_menu": "Please select a menu preference.",
-
     "submit_rsvp": "Submit RSVP",
     "rsvp_success": "Thank you for your RSVP!",
     "rsvp_error": "There was an error submitting your RSVP. Please try again.",
-    "rsvp_message_success": "Your RSVP has been successfully submitted!\nYou should receive a confirmation email shortly."
+    "rsvp_message_success": "Your RSVP has been successfully submitted!\nYou should receive a confirmation email shortly.",
+    "sections": {
+      "us_1": "Hi! We're Luca & Giulia. Our story started five years ago with a coffee that turned into countless adventures. From late-night pizza runs to spontaneous weekend trips, we've been partners in laughter, support, and all the little things that make life sweet. ",
+      "us_2": "Now, we're excited to take the next big step—celebrating our love with all of you!",
+      "us_3": "We can't wait to share this special day surrounded by the people who've been part of our journey.",
+      "where_and_when": "We're getting married on June 15, 2024, in the beautiful countryside. The ceremony will take place at 4 PM, followed by a reception filled with love, laughter, and dancing!",
+      "menu": "We've curated a menu that reflects our favorite flavors. From appetizers to desserts, we can't wait for you to indulge in this culinary journey with us!",
+      "gift_registry": "Your presence at our wedding is the greatest gift of all! However, if you wish to honor us with a gift, we've created a registry to help guide you."
+    }
   },
   "couple_view": {
     "dashboard_title": "Couple's Dashboard",

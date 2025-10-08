@@ -30,17 +30,13 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
       try {
         const fetchedGuests = await fetchGuests();
         setLoading(true);
-        // // Sort by createdAt descending (newest first)
-        // const sortedRSVPs = [...fetchedRSVPs].sort((a, b) => {
-        //   const aTime = a.submittedAt?.toMillis
-        //     ? a.submittedAt.toMillis()
-        //     : a.submittedAt.toMillis();
-        //   const bTime = b.submittedAt?.toMillis
-        //     ? b.submittedAt.toMillis()
-        //     : b.submittedAt.toMillis();
-        //   return bTime - aTime;
-        // });
-        setRsvps(fetchedGuests);
+        // Sort by createdAt descending (newest first)
+        const sortedGuests = [...fetchedGuests].sort((a, b) => {
+          const aTime = a.created_at ? a.created_at : a.created_at;
+          const bTime = b.created_at ? b.created_at : b.created_at;
+          return bTime - aTime;
+        });
+        setRsvps(sortedGuests);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch RSVPs:", err);
@@ -91,7 +87,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 </h3>
                 <p className="text-3xl font-bold">
                   {rsvps.reduce((total, rsvp) => {
-                    if (rsvp.attendance === "yes") {
+                    if (rsvp.attendance) {
                       return total + 1 + rsvp.plus_ones.length;
                     }
                     return total;
@@ -188,12 +184,12 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         <td className="px-4 py-3 border-b border-neutral-100">
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              rsvp.attendance === "yes"
+                              rsvp.attendance
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
-                            {rsvp.attendance === "yes" ? "✓ Yes" : "✗ No"}
+                            {rsvp.attendance ? "✓ Yes" : "✗ No"}
                           </span>
                         </td>
                         {/* Menu */}
@@ -220,7 +216,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         {/* Plus Ones */}
                         <td className="px-4 py-3 border-b border-neutral-100">
                           {rsvp.plus_ones.length > 0 ? (
-                            <div className="space-y-1">
+                            <div className="space-y-3">
                               {rsvp.plus_ones.map((plusOne, idx) => (
                                 <div
                                   key={idx}

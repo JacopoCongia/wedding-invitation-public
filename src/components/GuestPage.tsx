@@ -15,6 +15,7 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setTimeout(() => setFadeIn(true), 10); // Delay to allow fade-in effect
   }, []);
 
@@ -38,29 +39,38 @@ function GuestPage({ setLoggedInView, setIsFading }: GuestPageProps) {
         />
         <Section
           title={getTranslation("guest_view.us_title")}
-          content="content"
+          content={[
+            getTranslation("guest_view.sections.us_1"),
+            getTranslation("guest_view.sections.us_2"),
+            getTranslation("guest_view.sections.us_3"),
+          ]}
+          picture={{
+            src: "/couple_picture.jpg",
+            alt: "Picture of the Couple",
+            credit: "Photo by: Nathan McBride on Unsplash",
+          }}
           id={"us"}
           dark
         />
         <Section
           title={getTranslation("guest_view.where_and_when_title")}
-          content="content"
+          content={[getTranslation("guest_view.sections.where_and_when")]}
           id={"where_and_when"}
         />
         <Section
           title={getTranslation("guest_view.menu_title")}
-          content="content"
+          content={[getTranslation("guest_view.sections.menu")]}
           id={"menu"}
           dark
         />
         <Section
           title={getTranslation("guest_view.gift_title")}
-          content="content"
+          content={[getTranslation("guest_view.sections.gift_registry")]}
           id={"gift"}
         />
         <Section
           title={getTranslation("guest_view.rsvp_title")}
-          content=""
+          content={[]}
           id={"rsvp"}
           dark
         >

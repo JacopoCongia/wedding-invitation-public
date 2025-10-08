@@ -65,7 +65,7 @@ function Header({
         if (element) {
           const rect = element.getBoundingClientRect();
 
-          if (rect.top <= 56 && rect.bottom > 56) {
+          if (rect.top <= 60 && rect.bottom > 60) {
             setCurrentSection(sectionId);
             break;
           }
@@ -115,7 +115,7 @@ function Header({
     <>
       {/* Language selection UI */}
       <header
-        className={`flex text-[0.9rem] select-none justify-center items-center sticky top-0 z-50 p-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
+        className={`flex text-[0.9rem] h-[60px] select-none justify-center items-center sticky top-0 z-50 px-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
       >
         {/* Go back button */}
         <button
@@ -189,7 +189,7 @@ function Header({
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-neutral-700"
+                className={getIconClasses()}
               >
                 <line
                   x1="4"
@@ -214,12 +214,12 @@ function Header({
           </button>
         )}
         {
-          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-9">
+          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-12">
             {navigationContent}
           </div>
         }
         {/* Language selection UI */}
-        <div className="flex gap-3 ml-auto excluded-from-click">
+        <div className="flex gap-4 ml-auto excluded-from-click">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}

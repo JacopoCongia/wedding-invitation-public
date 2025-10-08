@@ -1,20 +1,12 @@
 import { useLanguage } from "../hooks/useLanguage";
 
 interface LoginPageProps {
-  onLogin: (e: React.FormEvent<HTMLFormElement>) => void;
-  passwordInput: string;
-  setPasswordInput: (value: string) => void;
+  onLogin: (role: "guest" | "couple") => void;
   errorMessage: string;
   isFading: boolean;
 }
 
-function LoginPage({
-  onLogin,
-  passwordInput,
-  setPasswordInput,
-  errorMessage,
-  isFading,
-}: LoginPageProps) {
+function LoginPage({ onLogin, errorMessage, isFading }: LoginPageProps) {
   // Use the custom hook to get translation function and language state from context
   const { getTranslation, setLanguage } = useLanguage();
 
@@ -31,7 +23,7 @@ function LoginPage({
         } transition-opacity duration-400`}
       >
         {/* Language selection UI */}
-        <div className="flex justify-center gap-3 fixed right-5 top-3">
+        <div className="flex justify-center gap-3 fixed right-4 top-5">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}
@@ -50,32 +42,25 @@ function LoginPage({
           className={`flex flex-col items-center justify-center text-center gap-1 h-screen bg-neutral-50 text-neutral-700`}
         >
           {/* Welcome message */}
-          <h1 className="text-[1.8rem] px-5 md:text-[2.2rem]">
+          {/* Title */}
+          <h1 className="great-vibes-font md:leading-[1em] text-[3.2rem] p-5 md:text-[4.5rem]">
             {getTranslation("login.welcome_title")}
           </h1>
-          <p className="text-[1rem] px-5 md:text-[1.1rem]">
-            {getTranslation("login.password_prompt")}
-          </p>
-          {/* Password input form */}
-          <form
-            onSubmit={onLogin}
-            className="flex flex-col items-center mt-5 w-[90%] md:w-[500px]"
-          >
-            <input
-              type="password"
-              placeholder={getTranslation("login.password_placeholder")}
-              className="border p-2 w-full text-center focus:outline-none"
-              value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
-              required
-            />
+          {/* Demo buttons */}
+          <div className="flex gap-[0.1em] items-center justify-center w-full min-[600px]:w-[700px]">
             <button
-              type="submit"
-              className="bg-neutral-700 text-neutral-50 p-2 mt-2 hover:bg-neutral-600 cursor-pointer w-full"
+              onClick={() => onLogin("guest")}
+              className="p-5 text-nowrap flex-1 min-[600px]:rounded-l-[0.6em] bg-emerald-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
             >
-              {getTranslation("login.enter_button")}
+              {getTranslation("login.guest_button")}
             </button>
-          </form>
+            <button
+              onClick={() => onLogin("couple")}
+              className="p-5 text-nowrap flex-1 min-[600px]:rounded-r-[0.6em] bg-cyan-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
+            >
+              {getTranslation("login.couple_button")}
+            </button>
+          </div>
           {errorMessage && (
             <p className="text-red-600 font-[500]">{errorMessage}</p>
           )}
