@@ -41,7 +41,7 @@ function Section({
         {content.map((paragraph, index) => (
           <p
             key={index}
-            className={`text-lg text-center px-[1.8em] min-[600px]:text-justify min-[600px]:px-0`}
+            className={`text-lg text-center px-[1.8em] min-[600px]:text-center min-[600px]:px-0`}
           >
             {paragraph}
           </p>

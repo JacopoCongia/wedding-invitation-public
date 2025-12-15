@@ -47,16 +47,16 @@ function LoginPage({ onLogin, errorMessage, isFading }: LoginPageProps) {
             {getTranslation("login.welcome_title")}
           </h1>
           {/* Demo buttons */}
-          <div className="flex gap-[0.1em] items-center justify-center w-full min-[600px]:w-[700px]">
+          <div className="flex gap-[0.1em] items-center justify-center w-[80%] min-[750px]:w-[700px]">
             <button
               onClick={() => onLogin("guest")}
-              className="p-5 text-nowrap flex-1 min-[600px]:rounded-l-[0.6em] bg-emerald-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
+              className="p-3 text-nowrap flex-1 bg-emerald-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
             >
               {getTranslation("login.guest_button")}
             </button>
             <button
               onClick={() => onLogin("couple")}
-              className="p-5 text-nowrap flex-1 min-[600px]:rounded-r-[0.6em] bg-cyan-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
+              className="p-3 text-nowrap flex-1 bg-cyan-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
             >
               {getTranslation("login.couple_button")}
             </button>
