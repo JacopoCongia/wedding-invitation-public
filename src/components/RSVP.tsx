@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { useLanguage } from "../hooks/useLanguage";
-import { addGuest } from "../utils/supabaseClient";
+// import { addGuest } from "../utils/supabaseClient";
 
 import { type FormState } from "../types/rsvp-form";
 
@@ -68,7 +69,7 @@ function RSVP() {
             lastName: "",
             menu: "",
             dietaryRestrictions: "",
-          }))
+          })),
         );
       } else {
         // Remove extra plus ones
@@ -88,19 +89,19 @@ function RSVP() {
     }
     if (!form.lastName.trim()) {
       newErrors.lastName = getTranslation(
-        "guest_view.rsvp_validation_lastname"
+        "guest_view.rsvp_validation_lastname",
       );
     }
     if (!form.email.trim()) {
       newErrors.email = getTranslation("guest_view.rsvp_validation_email");
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       newErrors.email = getTranslation(
-        "guest_view.rsvp_validation_email_invalid"
+        "guest_view.rsvp_validation_email_invalid",
       );
     }
     if (form.attendance === null) {
       newErrors.attendance = getTranslation(
-        "guest_view.rsvp_validation_attendance"
+        "guest_view.rsvp_validation_attendance",
       );
     }
 
@@ -113,17 +114,17 @@ function RSVP() {
       form.plusOnes.forEach((plusOne, index) => {
         if (!plusOne.firstName.trim()) {
           newErrors[`plusOneFirstName${index}`] = getTranslation(
-            "guest_view.rsvp_validation_name"
+            "guest_view.rsvp_validation_name",
           );
         }
         if (!plusOne.lastName.trim()) {
           newErrors[`plusOneLastName${index}`] = getTranslation(
-            "guest_view.rsvp_validation_lastname"
+            "guest_view.rsvp_validation_lastname",
           );
         }
         if (!plusOne.menu) {
           newErrors[`plusOneMenu${index}`] = getTranslation(
-            "guest_view.rsvp_validation_menu"
+            "guest_view.rsvp_validation_menu",
           );
         }
       });
@@ -143,21 +144,19 @@ function RSVP() {
     if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
 
-      const { data, error } = await addGuest(form);
-      if (error) {
-        if (error.code === "23505") {
-          // Duplicate email error
-          setErrors({
-            email: getTranslation("guest_view.rsvp_validation_email_used"),
-          });
-        }
-        console.error("Submission failed:", error.code, error.message);
-        // alert("There was an error submitting your RSVP. Please try again.");
-        setIsSubmitting(false);
-        return;
-      }
-
-      console.log("Form submitted successfully:", data);
+      // const { data, error } = await addGuest(form);
+      // if (error) {
+      //   if (error.code === "23505") {
+      //     // Duplicate email error
+      //     setErrors({
+      //       email: getTranslation("guest_view.rsvp_validation_email_used"),
+      //     });
+      //   }
+      //   console.error("Submission failed:", error.code, error.message);
+      //   // alert("There was an error submitting your RSVP. Please try again.");
+      //   setIsSubmitting(false);
+      //   return;
+      // }
 
       // Reset the form after successful submission
       setForm({
@@ -195,7 +194,7 @@ function RSVP() {
   // If the form is submitting, show a loading message
   if (isSubmitting) {
     return (
-      <div className="text-center text-[1.8rem] whitespace-pre-line leading-12">
+      <div className="text-center text-[1.8rem] leading-12 whitespace-pre-line">
         <p>{getTranslation("general.loading")}</p>
       </div>
     );
@@ -204,7 +203,7 @@ function RSVP() {
   // If the form is submitted, show a success message
   if (isSubmitted) {
     return (
-      <div className="text-center text-[1.8rem] whitespace-pre-line leading-12">
+      <div className="text-center text-[1.8rem] leading-12 whitespace-pre-line">
         <p>{getTranslation("guest_view.rsvp_message_success")}</p>
       </div>
     );
@@ -212,10 +211,10 @@ function RSVP() {
 
   // Render the RSVP form
   return (
-    <div className="flex items-center w-[90%] sm:w-[500px]">
+    <div className="flex w-[90%] items-center sm:w-[500px]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full text-center"
+        className="flex w-full flex-col text-center"
       >
         {/* First Name */}
         <label
@@ -231,7 +230,7 @@ function RSVP() {
           id="firstName"
           name="firstName"
           placeholder={getTranslation("guest_view.rsvp_name_placeholder")}
-          className={`bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center`}
+          className={`mt-1 mb-4 rounded bg-neutral-50 p-2 text-center text-neutral-700`}
           value={form.firstName}
           onChange={handleChange}
         />
@@ -250,17 +249,14 @@ function RSVP() {
           id="lastName"
           name="lastName"
           placeholder={getTranslation("guest_view.rsvp_lastname_placeholder")}
-          className="bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center"
+          className="mt-1 mb-4 rounded bg-neutral-50 p-2 text-center text-neutral-700"
           value={form.lastName}
           onChange={handleChange}
         />
         {/* END Last Name */}
 
         {/* Email */}
-        <label
-          htmlFor="email"
-          className={errors.email ? "text-red-500" : ""}
-        >
+        <label htmlFor="email" className={errors.email ? "text-red-500" : ""}>
           {errors.email ? errors.email : getTranslation("general.email")}
         </label>
         <input
@@ -268,7 +264,7 @@ function RSVP() {
           id="email"
           name="email"
           placeholder={getTranslation("guest_view.rsvp_email_placeholder")}
-          className="bg-neutral-50 p-2 text-neutral-700 mt-1 mb-4 rounded text-center"
+          className="mt-1 mb-4 rounded bg-neutral-50 p-2 text-center text-neutral-700"
           value={form.email}
           onChange={handleChange}
         />
@@ -280,18 +276,18 @@ function RSVP() {
             : getTranslation("guest_view.rsvp_attending_label")}
         </label>
         <div
-          className={`flex gap-3 mt-1 mb-4 text-center ${
-            errors.attendance ? "border-2 rounded border-red-500 p-2" : ""
+          className={`mt-1 mb-4 flex gap-3 text-center ${
+            errors.attendance ? "rounded border-2 border-red-500 p-2" : ""
           }`}
         >
-          <div className="flex items-center flex-1">
+          <div className="flex flex-1 items-center">
             <label
               htmlFor="attendance-yes"
-              className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+              className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                 form.attendance === true
                   ? "bg-teal-500 text-neutral-50"
                   : "bg-neutral-50 text-neutral-700"
-              } hover:bg-teal-500 hover:text-neutral-50 $`}
+              } $ hover:bg-teal-500 hover:text-neutral-50`}
             >
               {getTranslation("general.yes")}
             </label>
@@ -305,10 +301,10 @@ function RSVP() {
               className="hidden"
             />
           </div>
-          <div className="flex items-center flex-1">
+          <div className="flex flex-1 items-center">
             <label
               htmlFor="attendance-no"
-              className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+              className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                 form.attendance === false
                   ? "bg-teal-500 text-neutral-50"
                   : "bg-neutral-50 text-neutral-700"
@@ -331,23 +327,20 @@ function RSVP() {
         {form.attendance && (
           <div>
             {/* Menu */}
-            <label
-              htmlFor="menu"
-              className={errors.menu ? "text-red-500" : ""}
-            >
+            <label htmlFor="menu" className={errors.menu ? "text-red-500" : ""}>
               {errors.menu
                 ? errors.menu
                 : getTranslation("guest_view.rsvp_menu_label")}
             </label>
             <div
-              className={`flex gap-3 mt-1 mb-4 text-center ${
-                errors.menu ? "border-2 rounded border-red-500 p-2" : ""
+              className={`mt-1 mb-4 flex gap-3 text-center ${
+                errors.menu ? "rounded border-2 border-red-500 p-2" : ""
               }`}
             >
-              <div className="flex items-center flex-1">
+              <div className="flex flex-1 items-center">
                 <label
                   htmlFor="menu-regular"
-                  className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                  className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                     form.menu === "regular"
                       ? "bg-teal-500 text-neutral-50"
                       : "bg-neutral-50 text-neutral-700"
@@ -365,10 +358,10 @@ function RSVP() {
                   className="hidden"
                 />
               </div>
-              <div className="flex items-center flex-1">
+              <div className="flex flex-1 items-center">
                 <label
                   htmlFor="menu-vegetarian"
-                  className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                  className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                     form.menu === "vegetarian"
                       ? "bg-teal-500 text-neutral-50"
                       : "bg-neutral-50 text-neutral-700"
@@ -397,31 +390,25 @@ function RSVP() {
                 id="dietaryRestrictions"
                 name="dietaryRestrictions"
                 placeholder={getTranslation(
-                  "guest_view.rsvp_dietary_restrictions_placeholder"
+                  "guest_view.rsvp_dietary_restrictions_placeholder",
                 )}
-                className="bg-neutral-50 p-2 w-full text-neutral-700 mt-1 mb-4 rounded text-center"
+                className="mt-1 mb-4 w-full rounded bg-neutral-50 p-2 text-center text-neutral-700"
                 value={form.dietaryRestrictions}
                 onChange={handleChange}
               />
             </div>
             {/* Plus Ones */}
             {/* Render plus ones based on the number selected */}
-            <label
-              htmlFor="plusOnes"
-              className="mt-2"
-            >
+            <label htmlFor="plusOnes" className="mt-2">
               {getTranslation("guest_view.rsvp_plus_one_label")}
             </label>
             {/* Render the plus ones radio buttons (to add/remove plus ones) */}
-            <div className="flex gap-2 mt-1 mb-4 text-center sm:gap-3">
+            <div className="mt-1 mb-4 flex gap-2 text-center sm:gap-3">
               {plusOnesRadios.map((radio) => (
-                <div
-                  key={radio.id}
-                  className="flex items-center flex-1"
-                >
+                <div key={radio.id} className="flex flex-1 items-center">
                   <label
                     htmlFor={radio.id}
-                    className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                    className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                       form.plusOnes.length === radio.value
                         ? "bg-teal-500 text-neutral-50"
                         : "bg-neutral-50 text-neutral-700"
@@ -445,7 +432,7 @@ function RSVP() {
             {form.plusOnes.map((plusOne, idx) => (
               <div
                 key={idx}
-                className="flex flex-col gap-2 mb-4 pb-4 border-b border-neutral-200"
+                className="mb-4 flex flex-col gap-2 border-b border-neutral-200 pb-4"
               >
                 <h1>
                   {getTranslation("guest_view.rsvp_plus_one")} {idx + 1}
@@ -460,7 +447,7 @@ function RSVP() {
                         ? errors[`plusOneFirstName${idx}`]
                         : getTranslation("general.first_name") + ` +${idx + 1}`
                     }
-                    className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
+                    className={`w-full rounded bg-neutral-50 p-2 text-center text-neutral-700 ${
                       errors[`plusOneFirstName${idx}`] ? "text-red-500" : ""
                     }`}
                     value={plusOne.firstName}
@@ -482,7 +469,7 @@ function RSVP() {
                         ? errors[`plusOneLastName${idx}`]
                         : getTranslation("general.last_name") + ` +${idx + 1}`
                     }
-                    className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded ${
+                    className={`w-full rounded bg-neutral-50 p-2 text-center text-neutral-700 ${
                       errors[`plusOneLastName${idx}`] ? "text-red-500" : ""
                     }`}
                     value={plusOne.lastName}
@@ -498,21 +485,21 @@ function RSVP() {
                 </div>
                 {/* Radio Button for the plus ones menu choice */}
                 {errors[`plusOneMenu${idx}`] && (
-                  <p className="text-red-500 mb-[-10px]">
+                  <p className="mb-[-10px] text-red-500">
                     {errors[`plusOneMenu${idx}`]}
                   </p>
                 )}
                 <div
-                  className={`flex gap-3 mt-1 mb-4 text-center ${
+                  className={`mt-1 mb-4 flex gap-3 text-center ${
                     errors[`plusOneMenu${idx}`] &&
-                    "border-2 rounded border-red-500 p-2"
+                    "rounded border-2 border-red-500 p-2"
                   }`}
                 >
-                  <div className="flex items-center flex-1">
+                  <div className="flex flex-1 items-center">
                     {/* Menu Regular Plus Ones */}
                     <label
                       htmlFor={`menu-regular-${idx}`}
-                      className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                      className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                         plusOne.menu === "regular"
                           ? "bg-teal-500 text-neutral-50"
                           : "bg-neutral-50 text-neutral-700"
@@ -531,18 +518,18 @@ function RSVP() {
                         setForm((prev) => ({
                           ...prev,
                           plusOnes: prev.plusOnes.map((po, i) =>
-                            i === idx ? { ...po, menu: value } : po
+                            i === idx ? { ...po, menu: value } : po,
                           ),
                         }));
                       }}
                       className="hidden"
                     />
                   </div>
-                  <div className="flex items-center flex-1">
+                  <div className="flex flex-1 items-center">
                     {/* Menu Vegetarian Plus Ones */}
                     <label
                       htmlFor={`menu-vegetarian-${idx}`}
-                      className={`py-2 w-full cursor-pointer rounded font-[500] md:transition-colors ${
+                      className={`w-full cursor-pointer rounded py-2 font-[500] md:transition-colors ${
                         plusOne.menu === "vegetarian"
                           ? "bg-teal-500 text-neutral-50"
                           : "bg-neutral-50 text-neutral-700"
@@ -561,7 +548,7 @@ function RSVP() {
                         setForm((prev) => ({
                           ...prev,
                           plusOnes: prev.plusOnes.map((po, i) =>
-                            i === idx ? { ...po, menu: value } : po
+                            i === idx ? { ...po, menu: value } : po,
                           ),
                         }));
                       }}
@@ -576,15 +563,15 @@ function RSVP() {
                   name={`menu-dietary-restrictions-${idx}`}
                   value={plusOne.dietaryRestrictions}
                   placeholder={getTranslation(
-                    "guest_view.rsvp_dietary_restrictions_placeholder"
+                    "guest_view.rsvp_dietary_restrictions_placeholder",
                   )}
-                  className={`bg-neutral-50 p-2 text-neutral-700 w-full text-center rounded`}
+                  className={`w-full rounded bg-neutral-50 p-2 text-center text-neutral-700`}
                   onChange={(e) => {
                     const { value } = e.target;
                     setForm((prev) => ({
                       ...prev,
                       plusOnes: prev.plusOnes.map((po, i) =>
-                        i === idx ? { ...po, dietaryRestrictions: value } : po
+                        i === idx ? { ...po, dietaryRestrictions: value } : po,
                       ),
                     }));
                   }}
@@ -597,12 +584,14 @@ function RSVP() {
         )}
 
         {/* Submit Form Button */}
-        <button
+        <motion.button
+          initial={{ backgroundColor: "#F3F4F6" }}
+          whileHover={{ backgroundColor: "#00BBA7", color: "#FFFFFF" }}
           type="submit"
-          className="bg-neutral-50 p-2 text-neutral-700 mt-7 cursor-pointer rounded hover:bg-neutral-200"
+          className="mt-7 cursor-pointer rounded bg-neutral-50 p-2 text-neutral-700"
         >
           {getTranslation("guest_view.submit_rsvp")}
-        </button>
+        </motion.button>
       </form>
     </div>
   );

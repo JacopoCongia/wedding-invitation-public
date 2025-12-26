@@ -1,12 +1,12 @@
+import { motion } from "motion/react";
 import { useLanguage } from "../hooks/useLanguage";
 
 interface LoginPageProps {
   onLogin: (role: "guest" | "couple") => void;
   errorMessage: string;
-  isFading: boolean;
 }
 
-function LoginPage({ onLogin, errorMessage, isFading }: LoginPageProps) {
+function LoginPage({ onLogin, errorMessage }: LoginPageProps) {
   // Use the custom hook to get translation function and language state from context
   const { getTranslation, setLanguage } = useLanguage();
 
@@ -17,13 +17,14 @@ function LoginPage({ onLogin, errorMessage, isFading }: LoginPageProps) {
 
   return (
     <>
-      <div
-        className={`${
-          isFading ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-400`}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
       >
         {/* Language selection UI */}
-        <div className="flex justify-center gap-3 fixed right-4 top-5">
+        <div className="fixed top-5 right-4 flex justify-center gap-3">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}
@@ -39,33 +40,37 @@ function LoginPage({ onLogin, errorMessage, isFading }: LoginPageProps) {
           </p>
         </div>
         <div
-          className={`flex flex-col items-center justify-center text-center gap-1 h-screen bg-neutral-50 text-neutral-700`}
+          className={`flex h-screen flex-col items-center justify-center gap-1 bg-neutral-50 text-center text-neutral-700`}
         >
           {/* Welcome message */}
           {/* Title */}
-          <h1 className="great-vibes-font md:leading-[1em] text-[3.2rem] p-5 md:text-[4.5rem]">
+          <h1 className="great-vibes-font p-5 text-[3.2rem] md:text-[4.5rem] md:leading-[1em]">
             {getTranslation("login.welcome_title")}
           </h1>
           {/* Demo buttons */}
-          <div className="flex gap-[0.1em] items-center justify-center w-[80%] min-[750px]:w-[700px]">
-            <button
+          <div className="flex w-[80%] items-center justify-center gap-[0.1em] min-[750px]:w-[700px]">
+            <motion.button
+              initial={{ opacity: 1 }}
+              whileHover={{ opacity: 0.85 }}
               onClick={() => onLogin("guest")}
-              className="p-3 text-nowrap flex-1 bg-emerald-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
+              className="flex-1 cursor-pointer bg-emerald-800 p-3 text-nowrap text-neutral-50 select-none"
             >
               {getTranslation("login.guest_button")}
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              initial={{ opacity: 1 }}
+              whileHover={{ opacity: 0.85 }}
               onClick={() => onLogin("couple")}
-              className="p-3 text-nowrap flex-1 bg-cyan-800 text-neutral-50 select-none cursor-pointer hover:opacity-90"
+              className="flex-1 cursor-pointer bg-cyan-800 p-3 text-nowrap text-neutral-50 select-none"
             >
               {getTranslation("login.couple_button")}
-            </button>
+            </motion.button>
           </div>
           {errorMessage && (
-            <p className="text-red-600 font-[500]">{errorMessage}</p>
+            <p className="font-[500] text-red-600">{errorMessage}</p>
           )}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

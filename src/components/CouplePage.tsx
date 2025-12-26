@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import Header from "./Header";
 import { useLanguage } from "../hooks/useLanguage";
 import { fetchGuests } from "../utils/supabaseClient";
@@ -12,19 +13,15 @@ type GuestRowWithPlusOnes = Database["public"]["Tables"]["guests"]["Row"] & {
 // Define the types for the CouplePage component
 interface CouplePageProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
-  setIsFading: (isFading: boolean) => void;
 }
 
-function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
+function CouplePage({ setLoggedInView }: CouplePageProps) {
   const { getTranslation } = useLanguage();
-  const [fadeIn, setFadeIn] = useState(false);
   const [rsvps, setRsvps] = useState<GuestRowWithPlusOnes[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setTimeout(() => setFadeIn(true), 10); // Delay to allow fade-in effect
-
     // Function to fetch RSVPs from Supabase
     const loadGuests = async () => {
       try {
@@ -50,18 +47,15 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
   }, []);
 
   return (
-    <>
-      <Header
-        setLoggedInView={setLoggedInView}
-        setFadeIn={setFadeIn}
-        setIsFading={setIsFading}
-      />
-      <div
-        className={`${
-          fadeIn ? "opacity-100" : "opacity-0"
-        } transition-opacity duration-400 p-8`}
-      >
-        <h1 className="text-3xl font-bold mb-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Header setLoggedInView={setLoggedInView} />
+      <div>
+        <h1 className="mb-4 text-3xl font-bold">
           {getTranslation("couple_view.dashboard_title")}
         </h1>
 
@@ -72,16 +66,16 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
         {!loading && !error && (
           <div>
             {/* Stats for nerds */}
-            <div className="mb-6 gap-4 grid grid-cols-1 min-[600px]:grid-cols-2 min-[1200px]:grid-cols-4">
+            <div className="mb-6 grid grid-cols-1 gap-4 min-[600px]:grid-cols-2 min-[1200px]:grid-cols-4">
               {/* Total RSVPs card */}
-              <div className="bg-fuchsia-50 p-4 rounded-xl">
+              <div className="rounded-xl bg-fuchsia-50 p-4">
                 <h3 className="font-semibold">
                   {getTranslation("couple_view.rsvp_count")}
                 </h3>
                 <p className="text-3xl font-bold">{rsvps.length}</p>
               </div>
               {/* Total Guests card */}
-              <div className="bg-amber-50 p-4 rounded-xl">
+              <div className="rounded-xl bg-amber-50 p-4">
                 <h3 className="font-semibold">
                   {getTranslation("couple_view.total_guests")}
                 </h3>
@@ -95,7 +89,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                 </p>
               </div>
               {/* Total Regular Meals card */}
-              <div className="bg-blue-50 p-4 rounded-xl">
+              <div className="rounded-xl bg-blue-50 p-4">
                 <h3 className="font-semibold">
                   {getTranslation("couple_view.total_regular_meals")}
                 </h3>
@@ -103,14 +97,14 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                   {rsvps.reduce((total, rsvp) => {
                     const mainReg = rsvp.menu_choice === "regular" ? 1 : 0;
                     const plusReg = rsvp.plus_ones.filter(
-                      (p) => p.menu_choice === "regular"
+                      (p) => p.menu_choice === "regular",
                     ).length;
                     return total + mainReg + plusReg;
                   }, 0)}
                 </p>
               </div>
               {/* Total Vegetarian Meals card */}
-              <div className="bg-green-50 p-4 rounded-xl">
+              <div className="rounded-xl bg-green-50 p-4">
                 <h3 className="font-semibold">
                   {getTranslation("couple_view.total_vegetarian_meals")}
                 </h3>
@@ -119,7 +113,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                     const mainVeg =
                       rsvp.menu_choice?.toLowerCase() === "vegetarian" ? 1 : 0;
                     const plusVeg = rsvp.plus_ones.filter(
-                      (p) => p.menu_choice?.toLowerCase() === "vegetarian"
+                      (p) => p.menu_choice?.toLowerCase() === "vegetarian",
                     ).length;
                     return total + mainVeg + plusVeg;
                   }, 0)}
@@ -132,7 +126,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
               <p>{getTranslation("couple_view.no_rsvps")}</p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full bg-neutral-50  text-nowrap">
+                <table className="min-w-full bg-neutral-50 text-nowrap">
                   <thead>
                     <tr className="bg-neutral-50">
                       <th className="px-4 py-3 text-left font-semibold">
@@ -152,7 +146,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                       </th>
                       <th className="px-4 py-3 text-left font-semibold">
                         {getTranslation(
-                          "guest_view.rsvp_dietary_restrictions_label"
+                          "guest_view.rsvp_dietary_restrictions_label",
                         )}
                       </th>
                       <th className="px-4 py-3 text-left font-semibold">
@@ -169,21 +163,21 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                         }
                       >
                         {/* Name */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {firstLetterUppercase(rsvp.first_name ?? "")}
                         </td>
                         {/* Last Name */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {firstLetterUppercase(rsvp.last_name ?? "")}
                         </td>
                         {/* Email */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {rsvp.email}
                         </td>
                         {/* Attendance */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`rounded-full px-2 py-1 text-xs font-medium ${
                               rsvp.attendance
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
@@ -193,10 +187,10 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                           </span>
                         </td>
                         {/* Menu */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {rsvp.menu_choice && (
                             <span
-                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              className={`rounded-full px-2 py-1 text-xs font-medium ${
                                 rsvp.menu_choice.toLowerCase() === "vegetarian"
                                   ? "bg-green-100 text-green-800"
                                   : "bg-blue-100 text-blue-800"
@@ -206,34 +200,31 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {rsvp.menu_choice && rsvp.dietary_restrictions && (
-                            <span className="text-[0.9rem] font-regular">
+                            <span className="font-regular text-[0.9rem]">
                               {firstLetterUppercase(rsvp.dietary_restrictions)}
                             </span>
                           )}
                         </td>
                         {/* Plus Ones */}
-                        <td className="px-4 py-3 border-b border-neutral-100">
+                        <td className="border-b border-neutral-100 px-4 py-3">
                           {rsvp.plus_ones.length > 0 ? (
                             <div className="space-y-3">
                               {rsvp.plus_ones.map((plusOne, idx) => (
-                                <div
-                                  key={idx}
-                                  className="text-sm"
-                                >
+                                <div key={idx} className="text-sm">
                                   {/* Plus One Name and Last Name */}
                                   <span className="font-medium">
                                     {firstLetterUppercase(
-                                      plusOne.first_name ?? ""
+                                      plusOne.first_name ?? "",
                                     )}{" "}
                                     {firstLetterUppercase(
-                                      plusOne.last_name ?? ""
+                                      plusOne.last_name ?? "",
                                     )}
                                   </span>
                                   {/* Plus One Menu */}
                                   <span
-                                    className={`ml-2 px-2 py-1 rounded-full text-xs ${
+                                    className={`ml-2 rounded-full px-2 py-1 text-xs ${
                                       plusOne.menu_choice?.toLowerCase() ===
                                       "vegetarian"
                                         ? "bg-green-100 text-green-800"
@@ -241,16 +232,16 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                                     }`}
                                   >
                                     {firstLetterUppercase(
-                                      plusOne.menu_choice ?? ""
+                                      plusOne.menu_choice ?? "",
                                     )}
                                   </span>
                                   {/* Plus One Dietary Restrictions */}
                                   <span>
                                     {plusOne.dietary_restrictions && (
-                                      <span className="ml-2 text-[0.8rem] font-regular">
+                                      <span className="font-regular ml-2 text-[0.8rem]">
                                         (
                                         {firstLetterUppercase(
-                                          plusOne.dietary_restrictions
+                                          plusOne.dietary_restrictions,
                                         )}
                                         )
                                       </span>
@@ -260,7 +251,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
                               ))}
                             </div>
                           ) : (
-                            <span className="text-gray-400 text-sm">None</span>
+                            <span className="text-sm text-gray-400">None</span>
                           )}
                         </td>
                       </tr>
@@ -272,7 +263,7 @@ function CouplePage({ setLoggedInView, setIsFading }: CouplePageProps) {
           </div>
         )}
       </div>
-    </>
+    </motion.div>
   );
 }
 

@@ -5,17 +5,10 @@ import { getNavigationLinks } from "../utils/getNavigationLinks";
 
 interface HeaderProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
-  setFadeIn: (fadeIn: boolean) => void;
-  setIsFading: (isFading: boolean) => void;
   showNavigation?: boolean;
 }
 
-function Header({
-  setLoggedInView,
-  setFadeIn,
-  setIsFading,
-  showNavigation = false,
-}: HeaderProps) {
+function Header({ setLoggedInView, showNavigation = false }: HeaderProps) {
   // State to manage the current section for scrolling
   const [currentSection, setCurrentSection] = useState("");
 
@@ -79,13 +72,7 @@ function Header({
 
   const handleGoBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFadeIn(false); // Reset fade-in state
-    setTimeout(() => {
-      setLoggedInView("login");
-      setTimeout(() => {
-        setIsFading(false);
-      }, 10);
-    }, 400);
+    setLoggedInView("login");
   };
 
   // Function to handle the click event and scroll to the section with the corresponding ID
@@ -115,7 +102,7 @@ function Header({
     <>
       {/* Language selection UI */}
       <header
-        className={`flex text-[0.9rem] h-[60px] select-none justify-center items-center sticky top-0 z-50 px-4 transition-colors duration-300 lg:text-[1rem] ${getHeaderClasses()}`}
+        className={`sticky top-0 z-50 flex h-[60px] items-center justify-center px-4 text-[0.9rem] transition-colors duration-300 select-none lg:text-[1rem] ${getHeaderClasses()}`}
       >
         {/* Go back button */}
         <button
@@ -137,18 +124,13 @@ function Header({
             className={getIconClasses()}
           >
             <polyline points="15 18 9 12 15 6" />
-            <line
-              x1="9"
-              y1="12"
-              x2="21"
-              y2="12"
-            />
+            <line x1="9" y1="12" x2="21" y2="12" />
           </svg>
         </button>
         {/* Hamburger/X menu for mobile */}
         {showNavigation && (
           <button
-            className="flex items-center cursor-pointer excluded-from-click min-[850px]:hidden"
+            className="excluded-from-click flex cursor-pointer items-center min-[850px]:hidden"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             onClick={toggleMenu}
           >
@@ -165,18 +147,8 @@ function Header({
                 strokeLinejoin="round"
                 className={getIconClasses()}
               >
-                <line
-                  x1="18"
-                  y1="6"
-                  x2="6"
-                  y2="18"
-                />
-                <line
-                  x1="6"
-                  y1="6"
-                  x2="18"
-                  y2="18"
-                />
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             ) : (
               // Hamburger icon
@@ -191,35 +163,20 @@ function Header({
                 strokeLinejoin="round"
                 className={getIconClasses()}
               >
-                <line
-                  x1="4"
-                  y1="7"
-                  x2="20"
-                  y2="7"
-                />
-                <line
-                  x1="4"
-                  y1="12"
-                  x2="20"
-                  y2="12"
-                />
-                <line
-                  x1="4"
-                  y1="17"
-                  x2="20"
-                  y2="17"
-                />
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
               </svg>
             )}
           </button>
         )}
         {
-          <div className="hidden flex-1 gap-8 justify-center min-[850px]:flex lg:gap-12">
+          <div className="hidden flex-1 justify-center gap-8 min-[850px]:flex lg:gap-12">
             {navigationContent}
           </div>
         }
         {/* Language selection UI */}
-        <div className="flex gap-4 ml-auto excluded-from-click">
+        <div className="excluded-from-click ml-auto flex gap-4">
           <p
             className="cursor-pointer hover:text-neutral-400"
             onClick={() => handleLanguageChange("it")}
