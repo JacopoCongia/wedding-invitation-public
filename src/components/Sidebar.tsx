@@ -5,11 +5,9 @@ import { useMenu } from "../hooks/useMenu";
 
 interface SidebarProps {
   setLoggedInView: (view: "login" | "guest" | "couple") => void;
-  setFadeIn: (fadeIn: boolean) => void;
-  setIsFading: (isFading: boolean) => void;
 }
 
-function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
+function Sidebar({ setLoggedInView }: SidebarProps) {
   // Use the custom hook to access the language context
   const { getTranslation } = useLanguage();
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -19,14 +17,8 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
 
   const handleGoBackClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setFadeIn(false); // Reset fade-in state
-    setTimeout(() => {
-      setLoggedInView("login");
-      closeMenu(); // Close the menu
-      setTimeout(() => {
-        setIsFading(false);
-      }, 10);
-    }, 400);
+    setLoggedInView("login");
+    closeMenu(); // Close the menu
   };
 
   const links = getNavigationLinks(getTranslation);
@@ -82,19 +74,16 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
     <>
       <div
         ref={sidebarRef}
-        className={`flex flex-col select-none items-center pt-15 fixed top-[56px] left-0 z-40 h-screen bg-neutral-50 text-neutral-700 gap-8 w-full min-[500px]:w-[300px] min-[850px]:hidden transition-transform duration-300 ease-in-out ${
+        className={`fixed top-[56px] left-0 z-40 flex h-screen w-full flex-col items-center gap-8 bg-neutral-50 pt-15 text-neutral-700 transition-transform duration-300 ease-in-out select-none min-[500px]:w-[300px] min-[850px]:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {content}
         <div
           onClick={handleGoBackClick}
-          className="flex items-center mt-10 gap-3 cursor-pointer ml-[-26px]"
+          className="mt-10 ml-[-26px] flex cursor-pointer items-center gap-3"
         >
-          <button
-            aria-label="Back to login"
-            className="cursor-pointer"
-          >
+          <button aria-label="Back to login" className="cursor-pointer">
             <svg
               width="26"
               height="26"
@@ -107,12 +96,7 @@ function Sidebar({ setLoggedInView, setFadeIn, setIsFading }: SidebarProps) {
               className="text-neutral-700"
             >
               <polyline points="15 18 9 12 15 6" />
-              <line
-                x1="9"
-                y1="12"
-                x2="21"
-                y2="12"
-              />
+              <line x1="9" y1="12" x2="21" y2="12" />
             </svg>
           </button>
           <h1 className="text-neutral-700">
